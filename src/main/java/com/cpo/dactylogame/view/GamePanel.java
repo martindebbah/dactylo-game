@@ -1,27 +1,37 @@
 package com.cpo.dactylogame.view;
 
 import javax.swing.JPanel;
+
+import com.cpo.dactylogame.model.GameState;
+import com.cpo.dactylogame.model.Reader;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-import java.awt.Color;
-import java.awt.Graphics;
+import java.io.InputStream;
+import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener{
 
     private Thread gameThread;
-
     private static final double FPS = 60;
 
-    private String test = "test";
-    private boolean[] goodChar = new boolean[test.length()];
-    private boolean[] badChar = new boolean[test.length()];
-    private boolean testColor;
-    private int indexChar = 0;
+    private GameState gameState = GameState.MENU;
+    private Font nicoPaintReg;
+    private boolean button1, button2;
+
+    private Reader reader = new Reader(this);
 
     public GamePanel() {
         gameThread = new Thread(this);
         gameThread.start();
+
+        try{
+            InputStream is = getClass().getResourceAsStream("/com/cpo/dactylogame/resources/font/NicoPaint-Regular.ttf");
+            nicoPaintReg = Font.createFont(Font.TRUETYPE_FONT, is);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -52,51 +62,82 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
     }
 
+    public void menuDraw(Graphics g){
+        int x = 450;
+        int y = 100;
+        String str = "Play";
+        g.setFont(g.getFont().deriveFont(48f));
+
+        g.drawString(str, x, y);
+        if(button1) g.drawString(">", x-40, y);
+
+        y += 100;
+
+        str = "Exit";
+        g.drawString(str, x, y);
+        if(button2) g.drawString(">", x-40, y);
+    }
+
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        if(!testColor) g.setColor(Color.RED);
-        else g.setColor(Color.BLUE);
-        g.fillRect(0, 0, 48, 48);
+        g.setFont(nicoPaintReg);
 
-        int x = 400;
-        int y = 200;
-        g.setFont(g.getFont().deriveFont(48f));
-        char[] chars = test.toCharArray();
-        for(int i = 0; i < goodChar.length; i++){
-            if(goodChar[i]){
-                g.setColor(Color.GREEN);
-            }
-            else if(badChar[i]){
-                g.setColor(Color.RED);
-            }
-            else {
-                g.setColor(Color.BLACK);
-            }
-            g.drawString(String.valueOf(chars[i]), x, y);
-            x += 50;
+        switch(gameState){
+            case MENU:
+                menuDraw(g);
+                break;
+            case NORMAL:
+                reader.draw(g);
+                break;
+            case JEU:
+                break;
+            case MULTIJOUEUR:
+                break;
+            case GAMEOVER:
+                int x = 380;
+                int y = 100;
+                String str = "Fin du jeu";
+                g.setFont(g.getFont().deriveFont(48f));
+
+                g.drawString(str, x, y);
+                break;
         }
+            
     }
 
     @Override
     public void keyPressed(KeyEvent arg0) {
-        if(arg0.getKeyChar() == test.charAt(indexChar)){
-            goodChar[indexChar] = true;
-            indexChar++;
-            if(indexChar >= test.length()){
-                indexChar = 0;
-                test = "bravo";
-                goodChar = new boolean[test.length()];
-                badChar = new boolean[test.length()];
-            }
-        }
-        else{
-            badChar[indexChar] = true;
+
+        switch(gameState){
+            case GAMEOVER:
+                break;
+            case JEU:
+                break;
+            case MENU:
+                if(arg0.getKeyCode() == KeyEvent.VK_Z || arg0.getKeyCode() == KeyEvent.VK_S){
+                    if(button1){
+                        button1 = false;
+                        button2 = true;
+                    }
+                    else if(button2){
+                        button1 = true;
+                        button2 = false;
+                    }
+                    else button1 = true;
+                }
+                if(arg0.getKeyCode() == KeyEvent.VK_ENTER){
+                    if(button1) gameState = GameState.NORMAL;
+                    else if(button2) System.exit(0);
+                }
+                break;
+            case MULTIJOUEUR:
+                break;
+            case NORMAL:
+                reader.checkChar(arg0.getKeyChar());
+                break;
         }
 
-        if(arg0.getKeyCode() == KeyEvent.VK_X){
-            testColor = !testColor;
-        }
     }
 
     @Override
@@ -107,6 +148,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     @Override
     public void keyTyped(KeyEvent arg0) {
         
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
     
 }
