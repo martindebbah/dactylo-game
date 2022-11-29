@@ -10,7 +10,6 @@
 
   <name>Dactylo-game</name>
   <description>Un super jeu de dactylographie</description>
-  <url></url>
 
   <developers>
     <developer>
@@ -55,7 +54,7 @@
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
       <resource>
-        <directory>res</directory>
+        <directory>resources</directory>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>

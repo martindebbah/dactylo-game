@@ -1,71 +1,48 @@
 package com.cpo.dactylogame.model;
 
-import java.awt.*;
-import java.util.LinkedList;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Iterator;
+import java.util.Scanner;
 
-import com.cpo.dactylogame.view.GamePanel;
+public class Reader implements Iterator {
 
-public class Reader {
+    private File file;
+    private Scanner sc;
+    private String[] words;
 
-    private GamePanel gp;
-    private String currentWord;
-    private LinkedList<String> words = new LinkedList<String>();
-    private boolean[] goodChar;
-    private boolean[] badChar;
-    private int indexWord = 0;
-
-    public Reader(GamePanel gp){
-        this.gp = gp;
-
-        words.add("test");
-        words.add("test2");
-        words.add("test3");
-        words.add("test4");
-        words.add("test5");
-        words.add("test6");
-        words.add("test7");
-        words.add("test8");
-        words.add("test9");
-
-        currentWord = words.removeFirst();
-        goodChar = new boolean[currentWord.length()];
-        badChar = new boolean[currentWord.length()];
-    }
-
-    public void checkChar(char c){
-        if(c == currentWord.charAt(indexWord)){
-            goodChar[indexWord] = true;
-            indexWord++;
-        }else{
-            badChar[indexWord] = true;
-        }
-
-        if(indexWord == currentWord.length()){
-            indexWord = 0;
-            if(words.size() > 0) currentWord = words.removeFirst();
-            else gp.setGameState(GameState.GAMEOVER);
-            goodChar = new boolean[currentWord.length()];
-            badChar = new boolean[currentWord.length()];
+    /**
+     * Un objet permettant de lire un fichier texte mot par mot
+     * @param pathname Le fichier texte à lire
+     */
+    public Reader(String pathname) {
+        this.file = new File(pathname);
+        try {
+            this.sc = new Scanner(file);
+            sc.useDelimiter(" ");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
-    public void draw(Graphics g){
-        int x = 400;
-        int y = 200;
-        g.setFont(g.getFont().deriveFont(48f));
-        char[] chars = currentWord.toCharArray();
-        for(int i = 0; i < goodChar.length; i++){
-            if(goodChar[i]){
-                g.setColor(Color.GREEN);
-            }
-            else if(badChar[i]){
-                g.setColor(Color.RED);
-            }
-            else {
-                g.setColor(Color.BLACK);
-            }
-            g.drawString(String.valueOf(chars[i]), x, y);
-            x += 50;
-        }
+    /**
+     * 
+     * @return True si peut lire un autre mot
+     */
+    @Override
+    public boolean hasNext() {
+        return sc.hasNext();
     }
+
+    /**
+     * 
+     * @return Le prochain mot du fichier
+     */
+    @Override
+    public Object next() {
+        return sc.next();
+    }
+
+
+
 }

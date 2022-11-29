@@ -2,8 +2,8 @@ package com.cpo.dactylogame.view;
 
 import javax.swing.JPanel;
 
+import com.cpo.dactylogame.model.AncienReader;
 import com.cpo.dactylogame.model.GameState;
-import com.cpo.dactylogame.model.Reader;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     private Font nicoPaintReg;
     private boolean button1, button2;
 
-    private Reader reader = new Reader(this);
+    private AncienReader reader = new AncienReader(this);
 
     public GamePanel() {
         gameThread = new Thread(this);

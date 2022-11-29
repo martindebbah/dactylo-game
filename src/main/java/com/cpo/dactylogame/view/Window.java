@@ -1,5 +1,7 @@
 package com.cpo.dactylogame.view;
 
+
+
 import javax.swing.JFrame;
 
 public class Window extends JFrame {
