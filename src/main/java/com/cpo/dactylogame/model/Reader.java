@@ -15,14 +15,10 @@ public class Reader implements Iterator {
      * Un objet permettant de lire un fichier texte mot par mot
      * @param pathname Le fichier texte à lire
      */
-    public Reader(String pathname) {
+    public Reader(String pathname) throws FileNotFoundException {
         this.file = new File(pathname);
-        try {
-            this.sc = new Scanner(file);
-            sc.useDelimiter(" ");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.sc = new Scanner(file);
+        sc.useDelimiter(" |\n");
     }
 
     /**
