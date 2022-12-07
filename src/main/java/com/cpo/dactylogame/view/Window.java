@@ -28,5 +28,10 @@ public class Window extends JFrame {
         add(gp);
         addKeyListener(gp);
     }
+
+    public void refresh() {
+        revalidate();
+        repaint();
+    }
     
 }

@@ -21,7 +21,7 @@ public class Text {
         if (words.size() >= BUFFERSIZE)
             return;
         if (reader.hasNext())
-            words.add((String) reader.next());
+            words.add(reader.next());
     }
 
     /**

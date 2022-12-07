@@ -5,11 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class Reader implements Iterator {
+public class Reader implements Iterator<String> {
 
     private File file;
     private Scanner sc;
-    private String[] words;
 
     /**
      * Un objet permettant de lire un fichier texte mot par mot
@@ -35,10 +34,8 @@ public class Reader implements Iterator {
      * @return Le prochain mot du fichier
      */
     @Override
-    public Object next() {
+    public String next() {
         return sc.next();
     }
-
-
 
 }
