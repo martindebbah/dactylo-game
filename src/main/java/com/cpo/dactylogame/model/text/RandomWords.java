@@ -1,8 +1,6 @@
 package com.cpo.dactylogame.model.text;
 
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 public class RandomWords extends WordIterator {
 

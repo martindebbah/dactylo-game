@@ -3,6 +3,7 @@ package com.cpo.dactylogame.view;
 
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Window extends JFrame {
 
@@ -12,21 +13,31 @@ public class Window extends JFrame {
     public Window() {
         // Configuration de la fenêtre
         setTitle("Dactylo-game");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
-
-        setGame();
 
         setLocationRelativeTo(null);
         setVisible(true);
-
         setFocusable(true);
+
+        setMenu();
+    }
+
+    public void setMenu() {
+        Menu menu = new Menu(this);
+        addPanel(menu);
     }
 
     public void setGame(){
         GamePanel gp = new GamePanel();
-        add(gp);
+        addPanel(gp);
         addKeyListener(gp);
+    }
+
+    private void addPanel(JPanel panel) {
+        getContentPane().removeAll();
+        getContentPane().add(panel);
+        refresh();
     }
 
     public void refresh() {
