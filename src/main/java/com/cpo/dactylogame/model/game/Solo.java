@@ -1,7 +1,7 @@
 package com.cpo.dactylogame.model.game;
 
 import com.cpo.dactylogame.model.Player;
-import com.cpo.dactylogame.model.Text;
+import com.cpo.dactylogame.model.text.Text;
 import com.cpo.dactylogame.view.Window;
 
 public class Solo extends Game {
@@ -10,11 +10,7 @@ public class Solo extends Game {
 
     public Solo(Window window) {
         super(window);
-    }
-
-    @Override
-    public void setText(Text text) {
-        
+        setText(new Text(""));
     }
 
     @Override

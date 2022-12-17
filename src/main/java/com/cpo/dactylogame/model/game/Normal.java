@@ -1,19 +1,13 @@
 package com.cpo.dactylogame.model.game;
 
-import com.cpo.dactylogame.model.Text;
+import com.cpo.dactylogame.model.text.Text;
 import com.cpo.dactylogame.view.Window;
 
 public class Normal extends Game {
 
-    private Text text;
-
-    public Normal(Window window) {
+    public Normal(Window window, String path) {
         super(window);
-    }
-
-    @Override
-    public void setText(Text text) {
-        this.text = text;
+        setText(new Text(path));
     }
 
     @Override

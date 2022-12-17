@@ -2,7 +2,8 @@ package com.cpo.dactylogame.model;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
+
+import com.cpo.dactylogame.model.text.Text;
 
 public class Listener extends KeyAdapter {
 
@@ -14,11 +15,7 @@ public class Listener extends KeyAdapter {
     private int cptError = 0;
 
     public Listener() {
-        try {
-            this.text = new Text("lotr");
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.text = new Text("lotr");
         this.currentWord = "";
     }
 

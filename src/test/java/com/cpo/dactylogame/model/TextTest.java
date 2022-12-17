@@ -3,7 +3,7 @@ package com.cpo.dactylogame.model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
-import java.io.FileNotFoundException;
+import com.cpo.dactylogame.model.text.Text;
 
 public class TextTest {
 
@@ -11,11 +11,7 @@ public class TextTest {
 
     @BeforeEach
     public void initText() {
-        try {
-            this.text = new Text("test");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.text = new Text("test");
     }
 
     @AfterEach

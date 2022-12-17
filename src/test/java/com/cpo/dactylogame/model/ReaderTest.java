@@ -3,6 +3,8 @@ package com.cpo.dactylogame.model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
+import com.cpo.dactylogame.model.text.Reader;
+
 import java.io.FileNotFoundException;
 
 public class ReaderTest {
