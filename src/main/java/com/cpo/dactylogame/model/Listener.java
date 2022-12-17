@@ -6,9 +6,12 @@ import java.io.FileNotFoundException;
 
 public class Listener extends KeyAdapter {
 
-    private Text text;
+    private Text text; // différent en fonction du mode de jeu
     private String currentWord;
-    private String typedWord;
+    private int index = 0;
+    private boolean[] goodChar;
+    private boolean[] badChar;
+    private int cptError = 0;
 
     public Listener() {
         try {
@@ -17,22 +20,31 @@ public class Listener extends KeyAdapter {
             e.printStackTrace();
         }
         this.currentWord = "";
-        this.typedWord = "";
     }
 
     @Override
     public void keyTyped(KeyEvent key) {
         if (currentWord.equals(""))
             return;
-
-        typedWord += key.getKeyChar();
+        if (key.getKeyChar() == currentWord.charAt(index)){
+            goodChar[index] = true;
+            index++;
+            if (index == currentWord.length()) 
+                refresh();
+        }
+        else {
+            badChar[index] = true;
+            cptError++;
+        }
     }
 
     public void refresh() {
         if (text.isEmpty())
             gameOver();
-        typedWord = "";
         currentWord = text.removeFirst();
+        goodChar = new boolean[currentWord.length()];
+        badChar = new boolean[currentWord.length()];
+        index = 0;
     }
 
     public void gameOver() {
