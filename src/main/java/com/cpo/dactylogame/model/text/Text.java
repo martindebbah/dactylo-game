@@ -1,4 +1,4 @@
-package com.cpo.dactylogame.model;
+package com.cpo.dactylogame.model.text;
 
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
@@ -7,11 +7,19 @@ public class Text {
 
     private LinkedList<String> words;
     private static int BUFFERSIZE = 15;
-    private Reader reader;
+    private WordIterator iterator;
     
-    public Text(String text) throws FileNotFoundException {
+    /**
+     * 
+     * @param text Le fichier texte à lire, "" Si on veut des mots aléatoires
+     */
+    public Text(String text) {
         this.words = new LinkedList<String>();
-        this.reader = new Reader("resources/textes/" + text + ".txt");
+        try {
+            this.iterator = new Reader("resources/textes/" + text + ".txt");
+        }catch (FileNotFoundException e) {
+            this.iterator = new RandomWords();
+        }
     }
 
     /**
@@ -20,8 +28,8 @@ public class Text {
     public void addWord() {
         if (words.size() >= BUFFERSIZE)
             return;
-        if (reader.hasNext())
-            words.add(reader.next());
+        if (iterator.hasNext())
+            words.add(iterator.next());
     }
 
     /**
@@ -59,7 +67,7 @@ public class Text {
      * @return True si tous les mots ont été écrits
      */
     public boolean isEmpty() {
-        return words.isEmpty() && !reader.hasNext();
+        return words.isEmpty() && !iterator.hasNext();
     }
 
     /**
@@ -67,7 +75,7 @@ public class Text {
      * @return True si le buffer est plein ou qu'on ne peut plus lire de mot
      */
     public boolean isFull() {
-        return words.size() >= BUFFERSIZE || !reader.hasNext();
+        return words.size() >= BUFFERSIZE || !iterator.hasNext();
     }
 
     /**

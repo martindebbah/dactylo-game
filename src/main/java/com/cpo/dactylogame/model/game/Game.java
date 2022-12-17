@@ -5,12 +5,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Timer;
 
-import com.cpo.dactylogame.model.Text;
+import com.cpo.dactylogame.model.text.Text;
 import com.cpo.dactylogame.view.Window;
 
 public abstract class Game implements ActionListener {
 
     private Window window;
+    protected Text text;
     // private Param param;
     private Timer timer;
     private final int FPS = 60;
@@ -49,7 +50,9 @@ public abstract class Game implements ActionListener {
      * Ajoute un texte à la partie
      * @param text Le texte à ajouter
      */
-    public abstract void setText(Text text);
+    public void setText(Text text) {
+        this.text = text;
+    }
 
     /**
      * 

@@ -1,11 +1,10 @@
-package com.cpo.dactylogame.model;
+package com.cpo.dactylogame.model.text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Iterator;
 import java.util.Scanner;
 
-public class Reader implements Iterator<String> {
+public class Reader extends WordIterator {
 
     private File file;
     private Scanner sc;
@@ -20,19 +19,11 @@ public class Reader implements Iterator<String> {
         sc.useDelimiter(" |\n");
     }
 
-    /**
-     * 
-     * @return True si peut lire un autre mot
-     */
     @Override
     public boolean hasNext() {
         return sc.hasNext();
     }
 
-    /**
-     * 
-     * @return Le prochain mot du fichier
-     */
     @Override
     public String next() {
         return sc.next();
