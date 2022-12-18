@@ -37,7 +37,7 @@ public class Window extends JFrame {
     public void setGame(GameState gameState){
         switch (gameState) {
             case NORMAL:
-                game = new Normal(this, "lotr");
+                game = new Normal(this, "");
                 gameView = new GameView.NormalView(game);
                 addPanel(gameView);
                 addKeyListener(game.getListener());

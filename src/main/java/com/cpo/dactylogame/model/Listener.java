@@ -16,7 +16,7 @@ public class Listener extends KeyAdapter {
 
     public Listener(Text text) {
         this.text = text;
-        currentWord = "carotte";
+        currentWord = text.getBuffer();
         goodChar = new boolean[currentWord.length()];
         badChar = new boolean[currentWord.length()];
         index = 0;
@@ -31,18 +31,21 @@ public class Listener extends KeyAdapter {
             index++;
             if (index == currentWord.length()) 
                 refresh();
-            System.out.print(key.getKeyChar()+" ");
         }
         else {
             badChar[index] = true;
             cptError++;
+            index++;
+            if (index == currentWord.length()) 
+                refresh();
         }
+        System.out.println("index: " + index);
     }
 
     public void refresh() {
         if (text.isEmpty())
             gameOver();
-        currentWord = "rien";
+        currentWord = text.getBuffer();
         goodChar = new boolean[currentWord.length()];
         badChar = new boolean[currentWord.length()];
         index = 0;

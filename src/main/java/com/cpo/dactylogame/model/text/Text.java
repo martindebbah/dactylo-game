@@ -19,6 +19,8 @@ public class Text {
             this.iterator = new Reader("resources/textes/" + text + ".txt");
         }catch (FileNotFoundException e) {
             this.iterator = new RandomWords();
+            for(int i = 0; i < BUFFERSIZE*2; i++)
+                addWord();
         }
     }
 
@@ -87,7 +89,7 @@ public class Text {
         for (int i = 0; i < BUFFERSIZE; i++) {
             if (i == words.size())
                 break;
-            buf += (i == 0 ? "" : " ") + words.get(i);
+            buf += (i == 0 ? "" : " ") + (i % 3 == 0 && i != 0 ? "\n" : "") + words.get(i);
         }
         return buf;
     }

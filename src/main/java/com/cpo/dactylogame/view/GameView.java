@@ -44,13 +44,21 @@ public abstract class GameView extends JPanel{
 
         @Override
         public void draw(java.awt.Graphics g) {
-            int x = 200;
+            int x = 150;
             int y = 200;
             g.setFont(nicoPaintReg);
             g.setColor(Color.YELLOW);
             g.setFont(g.getFont().deriveFont(30f));
-            for(int i = 0; i < game.getListener().getGoodChar().length; i++){
-                if(game.getListener().getGoodChar()[i]){
+
+            String words = game.getListener().getCurrentWord();
+            char[] chars = words.toCharArray();
+
+            for(int i = 0; i < chars.length; i++){
+                if(chars[i] == '\n'){
+                    y += 40;
+                    x = 150;
+                }
+                else if(game.getListener().getGoodChar()[i]){
                     g.setColor(Color.GREEN);
                 }
                 else if(game.getListener().getBadChar()[i]){
@@ -59,8 +67,10 @@ public abstract class GameView extends JPanel{
                 else {
                     g.setColor(Color.YELLOW);
                 }
-                g.drawString(String.valueOf(game.getListener().getCurrentWord().charAt(i)), x, y);
-                x += 25;
+                if(chars[i] != '\n'){
+                    g.drawString(String.valueOf(chars[i]), x, y);
+                    x += 25;
+                }
             }
         }
 
@@ -68,7 +78,6 @@ public abstract class GameView extends JPanel{
         public void paintComponent(java.awt.Graphics g) {
             super.paintComponent(g);
             draw(g);
-            // game.getWindow().refresh();
         }
         
     }
