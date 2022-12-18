@@ -1,17 +1,36 @@
 package com.cpo.dactylogame.view;
 
+import javax.swing.JPanel;
+import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import com.cpo.dactylogame.model.game.Game;
 
-public abstract class GameView {
+public abstract class GameView extends JPanel{
     
-    private Game game;
+    protected Game game;
+
+    protected Font nicoPaintReg;
 
     public GameView(Game game) {
         this.game = game;
+
+        try{
+            InputStream is = new FileInputStream(new File("resources/font/NicoPaint-Regular.ttf"));
+            nicoPaintReg = Font.createFont(Font.TRUETYPE_FONT, is);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        setSize(game.getWindow().getSize());
+        setBackground(new Color(50, 50, 50));
     }
 
     /*
-     * Méthode qui affiche le jeu en focntion du mode de jeu
+     * Méthode qui affiche le jeu en fonction du mode de jeu
      */
     public abstract void draw(java.awt.Graphics g);
 
@@ -23,7 +42,31 @@ public abstract class GameView {
 
         @Override
         public void draw(java.awt.Graphics g) {
-            
+            int x = 200;
+            int y = 200;
+            g.setFont(nicoPaintReg);
+            g.setColor(Color.YELLOW);
+            g.setFont(g.getFont().deriveFont(30f));
+            for(int i = 0; i < game.getListener().getGoodChar().length; i++){
+                if(game.getListener().getGoodChar()[i]){
+                    g.setColor(Color.GREEN);
+                }
+                else if(game.getListener().getBadChar()[i]){
+                    g.setColor(Color.RED);
+                }
+                else {
+                    g.setColor(Color.YELLOW);
+                }
+                g.drawString(String.valueOf(game.getListener().getCurrentWord().charAt(i)), x, y);
+                x += 25;
+            }
+        }
+
+        @Override
+        public void paintComponent(java.awt.Graphics g) {
+            super.paintComponent(g);
+            draw(g);
+            game.getWindow().refresh();
         }
         
     }

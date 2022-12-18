@@ -10,7 +10,6 @@ public class Solo extends Game {
 
     public Solo(Window window) {
         super(window);
-        setText(new Text(""));
     }
 
     @Override

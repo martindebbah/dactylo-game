@@ -3,6 +3,8 @@ package com.cpo.dactylogame.view;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.cpo.dactylogame.model.GameState;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.GridBagLayout;
@@ -50,8 +52,8 @@ public class Menu extends JPanel{
         removeAll();
 
         // Boutons de choix de mode de jeu
-        createButton("Mode Normal", e -> {window.setGame();});
-        createButton("Mode Jeu", e -> {window.setGame();});
+        createButton("Mode Normal", e -> {window.setGame(GameState.NORMAL);});
+        createButton("Mode Jeu", e -> {window.setGame(GameState.JEU);});
         // createButton("Mode Jeu en Multijoueur", e -> {window.setGame();});
         
         // Bouton de retour en arrière

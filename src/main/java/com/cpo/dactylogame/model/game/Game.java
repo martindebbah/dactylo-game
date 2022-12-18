@@ -6,18 +6,18 @@ import java.awt.event.ActionEvent;
 import javax.swing.Timer;
 
 import com.cpo.dactylogame.model.Listener;
-import com.cpo.dactylogame.model.text.Text;
+import com.cpo.dactylogame.model.Player;
 import com.cpo.dactylogame.view.Window;
 
 public abstract class Game implements ActionListener {
 
-    private Window window;
-    protected Text text;
+    protected Window window;
     // private Param param;
     private Timer timer;
     private final int FPS = 60;
 
-    private Listener listener;
+    protected Player player;
+    protected Listener listener;
 
     /**
      * Crée un objet jeu
@@ -46,15 +46,8 @@ public abstract class Game implements ActionListener {
         // Mettre à jour le jeu
         
         // Mettre à jour l'affichage
+        window.getGameView().repaint();
         window.refresh();
-    }
-    
-    /**
-     * Ajoute un texte à la partie
-     * @param text Le texte à ajouter
-     */
-    public void setText(Text text) {
-        this.text = text;
     }
 
     /**
@@ -65,6 +58,10 @@ public abstract class Game implements ActionListener {
 
     public Listener getListener() {
         return listener;
+    }
+
+    public Window getWindow() {
+        return window;
     }
     
 }

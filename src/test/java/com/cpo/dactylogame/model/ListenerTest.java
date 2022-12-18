@@ -3,13 +3,15 @@ package com.cpo.dactylogame.model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
+import com.cpo.dactylogame.model.text.Text;
+
 public class ListenerTest {
 
     private Listener listener;
 
     @BeforeEach
     public void initListener() {
-        this.listener = new Listener();
+        this.listener = new Listener(new Text(""));
     }
 
     @AfterEach
