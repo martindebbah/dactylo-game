@@ -28,10 +28,18 @@ public abstract class Game implements ActionListener {
         this.timer = new Timer(1000 / FPS, this);
     }
 
+    public void start() {
+        timer.start();
+    }
+
+    public void gameOver() {
+        timer.stop();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (isGameOver()) { // La partie est finie, on arête le jeu
-            timer.stop();
+            gameOver();
         }
         // La partie continue
         mainLoop();

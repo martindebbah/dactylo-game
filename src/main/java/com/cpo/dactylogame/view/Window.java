@@ -19,7 +19,7 @@ public class Window extends JFrame {
     public Window() {
         // Configuration de la fenêtre
         setTitle("Dactylo-game");
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
 
         setLocationRelativeTo(null);
@@ -30,8 +30,7 @@ public class Window extends JFrame {
     }
 
     public void setMenu() {
-        Menu menu = new Menu(this);
-        addPanel(menu);
+        addPanel(new Menu(this));
         refresh();
     }
 
@@ -58,6 +57,7 @@ public class Window extends JFrame {
     private void addPanel(JPanel panel) {
         getContentPane().removeAll();
         getContentPane().add(panel);
+        refresh();
     }
 
     public void refresh() {

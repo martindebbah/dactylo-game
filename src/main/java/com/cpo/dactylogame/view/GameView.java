@@ -27,6 +27,8 @@ public abstract class GameView extends JPanel{
 
         setSize(game.getWindow().getSize());
         setBackground(new Color(50, 50, 50));
+
+        game.start();
     }
 
     /*
@@ -66,7 +68,7 @@ public abstract class GameView extends JPanel{
         public void paintComponent(java.awt.Graphics g) {
             super.paintComponent(g);
             draw(g);
-            game.getWindow().refresh();
+            // game.getWindow().refresh();
         }
         
     }

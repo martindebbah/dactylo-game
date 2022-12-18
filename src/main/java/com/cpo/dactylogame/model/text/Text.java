@@ -15,7 +15,11 @@ public class Text {
      */
     public Text(String text) {
         this.words = new LinkedList<String>();
-        this.iterator = new RandomWords();
+        try {
+            this.iterator = new Reader("resources/textes/" + text + ".txt");
+        }catch (FileNotFoundException e) {
+            this.iterator = new RandomWords();
+        }
     }
 
     /**
