@@ -97,7 +97,7 @@ public class TextTest {
 
         assertEquals("un deux", str1);
         assertEquals(
-            "un deux trois quatre cinq six sept huit neuf dix onze douze treize quatorze quinze",
+            "un deux trois \nquatre cinq six \nsept huit neuf \ndix onze douze \ntreize quatorze quinze",
             str2);
     }
     

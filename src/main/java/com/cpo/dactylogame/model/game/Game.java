@@ -23,15 +23,23 @@ public abstract class Game implements ActionListener {
      * Crée un objet jeu
      * @param window La fenêtre du jeu
      */
-    public Game(Window window) {
+    public Game(Window window, Listener listener) {
         this.window = window;
+        this.listener = listener;
         this.timer = new Timer(1000 / FPS, this);
+        // initGame();
     }
 
+    /**
+     * Débute la partie
+     */
     public void start() {
         timer.start();
     }
 
+    /**
+     * Arrête la partie
+     */
     public void gameOver() {
         timer.stop();
     }
@@ -54,7 +62,7 @@ public abstract class Game implements ActionListener {
         // Mettre à jour le jeu
         
         // Mettre à jour l'affichage
-        window.getGameView().repaint();
+        // window.getGameView().repaint();
         window.refresh();
     }
 
@@ -64,10 +72,23 @@ public abstract class Game implements ActionListener {
      */
     public abstract boolean isGameOver();
 
+    /**
+     * Initialise la partie
+     */
+    public abstract void initGame();
+
+    /**
+     * 
+     * @return Le Listener du jeu
+     */
     public Listener getListener() {
         return listener;
     }
 
+    /**
+     * 
+     * @return La fenêtre du jeu
+     */
     public Window getWindow() {
         return window;
     }

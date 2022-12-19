@@ -94,5 +94,12 @@ public class Text {
         return buf;
     }
 
+    /**
+     * 
+     * @return La taille maximale du buffer
+     */
+    public int getBufferSize() {
+        return BUFFERSIZE;
+    }
     
 }

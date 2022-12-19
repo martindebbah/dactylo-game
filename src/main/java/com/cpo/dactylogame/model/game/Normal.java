@@ -7,13 +7,18 @@ import com.cpo.dactylogame.view.Window;
 public class Normal extends Game{
 
     public Normal(Window window, String path) {
-        super(window);
-        listener = new Listener(new Text(path));
+        super(window, new Listener(new Text(path)));
     }
 
     @Override
     public boolean isGameOver() {
         return listener.getText().isEmpty();
+    }
+
+    @Override
+    public void initGame() {
+        while (!listener.getText().isFull())
+            listener.getText().addWord();
     }
     
 }
