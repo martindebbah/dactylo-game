@@ -22,6 +22,10 @@ public class Listener extends KeyAdapter {
         index = 0;
     }
 
+    // Si char == " " -> validation du mot
+    // Créer une fonction validateWord() pour forcer la validation du mot courant
+    // " " -> validateWord()
+    // Et en mode jeu la file pleine appellera aussi cette fonction
     @Override
     public void keyTyped(KeyEvent key) {
         if (currentWord.equals(""))
@@ -30,7 +34,7 @@ public class Listener extends KeyAdapter {
             goodChar[index] = true;
             index++;
             if (index == currentWord.length()) 
-                refresh();
+                refresh(); // Pas forcément vu que si on tape pas " ", on continue d'éditer le mot actuel
         }
         else {
             badChar[index] = true;
@@ -43,9 +47,9 @@ public class Listener extends KeyAdapter {
     }
 
     public void refresh() {
-        if (text.isEmpty())
+        if (text.isEmpty()) // On vérifie ça dans la boucle de jeu normalement
             gameOver();
-        currentWord = text.getBuffer();
+        currentWord = text.getBuffer(); // Ca devrait pas être currentWord() ?
         goodChar = new boolean[currentWord.length()];
         badChar = new boolean[currentWord.length()];
         index = 0;

@@ -1,5 +1,9 @@
 package com.cpo.dactylogame.model;
 
+/**
+ * Peut être supprimé
+ */
+
 import java.awt.*;
 import java.util.LinkedList;
 

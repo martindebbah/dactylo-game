@@ -16,7 +16,7 @@ public abstract class Game implements ActionListener {
     private Timer timer;
     private final int FPS = 60;
 
-    protected Player player;
+    protected Player player; // Bouger dans Solo ?
     protected Listener listener;
 
     /**
@@ -28,6 +28,7 @@ public abstract class Game implements ActionListener {
         this.listener = listener;
         this.timer = new Timer(1000 / FPS, this);
         // initGame();
+        window.refresh();
     }
 
     /**

@@ -20,7 +20,7 @@ public class Text {
         }catch (FileNotFoundException e) {
             this.iterator = new RandomWords();
             for(int i = 0; i < BUFFERSIZE*2; i++)
-                addWord();
+                addWord(); // Peut sûrement être fait dans Game.java mais pas réussi pour le moment
         }
     }
 
@@ -90,7 +90,7 @@ public class Text {
             if (i == words.size())
                 break;
             buf += (i == 0 ? "" : " ") + (i % 3 == 0 && i != 0 ? "\n" : "") + words.get(i);
-        }
+        } // Pas forcément besoin des retours à la ligne
         return buf;
     }
 

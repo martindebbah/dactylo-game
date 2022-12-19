@@ -1,5 +1,9 @@
 package com.cpo.dactylogame.view;
 
+/**
+ * Peut être supprimé
+ */
+
 import javax.swing.JPanel;
 
 import com.cpo.dactylogame.model.AncienReader;
