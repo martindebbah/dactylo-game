@@ -7,6 +7,7 @@ import com.cpo.dactylogame.model.text.Text;
 
 public class Listener extends KeyAdapter {
 
+    // Stat optionnel
     private Text text; // différent en fonction du mode de jeu
     private String currentWord;
     private int index = 0;
@@ -14,9 +15,9 @@ public class Listener extends KeyAdapter {
     private boolean[] badChar;
     private int cptError = 0;
 
-    public Listener(Text text) {
+    public Listener(Text text) { // stat optionnel en arg
         this.text = text;
-        currentWord = text.getBuffer();
+        currentWord = text.getBuffer(); // text.currentWord()
         goodChar = new boolean[currentWord.length()];
         badChar = new boolean[currentWord.length()];
         index = 0;
@@ -25,7 +26,7 @@ public class Listener extends KeyAdapter {
     // Si char == " " -> validation du mot
     // Créer une fonction validateWord() pour forcer la validation du mot courant
     // " " -> validateWord()
-    // Et en mode jeu la file pleine appellera aussi cette fonction
+    // Et en mode jeu, ajouter un mot à la file pleine appellera aussi cette fonction
     @Override
     public void keyTyped(KeyEvent key) {
         if (currentWord.equals(""))
@@ -34,7 +35,7 @@ public class Listener extends KeyAdapter {
             goodChar[index] = true;
             index++;
             if (index == currentWord.length()) 
-                refresh(); // Pas forcément vu que si on tape pas " ", on continue d'éditer le mot actuel
+                refresh();
         }
         else {
             badChar[index] = true;
@@ -44,20 +45,19 @@ public class Listener extends KeyAdapter {
                 refresh();
         }
         System.out.println("index: " + index);
+        /*
+         * ajouter une condition pour espace -> valider le mot
+         * et pour backspace -> supprimer le dernier char + index--
+         */
     }
 
     public void refresh() {
-        if (text.isEmpty()) // On vérifie ça dans la boucle de jeu normalement
-            gameOver();
-        currentWord = text.getBuffer(); // Ca devrait pas être currentWord() ?
+        // text.removeFirst();
+        currentWord = text.getBuffer(); // text.currentWord
         goodChar = new boolean[currentWord.length()];
         badChar = new boolean[currentWord.length()];
         index = 0;
-    }
-
-    public void gameOver() {
-        System.out.println("Partie terminée");
-        System.exit(0);
+        // mettre à jour le nombre d'erreur dans le mot
     }
 
     public Text getText() {
@@ -81,6 +81,7 @@ public class Listener extends KeyAdapter {
     }
 
     public int getCptError() {
+        // remettre le nombre à 0 avant de le retourner ?
         return cptError;
     }
     

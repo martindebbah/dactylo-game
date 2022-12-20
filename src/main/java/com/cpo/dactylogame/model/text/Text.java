@@ -19,8 +19,6 @@ public class Text {
             this.iterator = new Reader("resources/textes/" + text + ".txt");
         }catch (FileNotFoundException e) {
             this.iterator = new RandomWords();
-            for(int i = 0; i < BUFFERSIZE*2; i++)
-                addWord(); // Peut sûrement être fait dans Game.java mais pas réussi pour le moment
         }
     }
 

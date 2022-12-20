@@ -7,7 +7,7 @@ import com.cpo.dactylogame.view.Window;
 
 public class Normal extends Game{
 
-    private Stat stat;
+    private Stat stat; // A passer en optionnel dans listener
 
     public Normal(Window window, String path) {
         super(window, new Listener(new Text(path)));
@@ -28,7 +28,7 @@ public class Normal extends Game{
     @Override
     public void start() {
         super.start();
-        stat.initTime();
+        // stat.initTime();
     }
 
     @Override

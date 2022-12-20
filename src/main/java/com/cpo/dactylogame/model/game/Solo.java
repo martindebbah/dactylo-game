@@ -10,7 +10,7 @@ public class Solo extends Game {
     private Player player;
 
     public Solo(Window window) {
-        super(window, new Listener(new Text("path")));
+        super(window, new Listener(new Text("")));
     }
 
     @Override
@@ -22,5 +22,11 @@ public class Solo extends Game {
     public void initGame() {
         
     }
+
+    /*
+     * override mainloop()
+     * player.loseHP(listener.getCptError());
+     * super.mainloop()
+     */
     
 }

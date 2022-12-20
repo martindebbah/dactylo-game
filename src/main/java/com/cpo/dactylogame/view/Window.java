@@ -39,19 +39,17 @@ public class Window extends JFrame {
             case NORMAL:
                 game = new Normal(this, "");
                 gameView = new GameView.NormalView(game);
-                addPanel(gameView);
-                addKeyListener(game.getListener());
-                refresh();
                 break;
             case JEU:
                 game = new Solo(this);
-                addKeyListener(game.getListener());
                 gameView = new GameView.SoloView(game);
-                refresh();
                 break;
             default:
                 break;
-        }
+            }
+            addPanel(gameView);
+            addKeyListener(game.getListener());
+            refresh();
     }
 
     private void addPanel(JPanel panel) {

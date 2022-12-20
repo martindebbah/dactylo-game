@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.Timer;
 
 import com.cpo.dactylogame.model.Listener;
-import com.cpo.dactylogame.model.Player;
 import com.cpo.dactylogame.view.Window;
 
 public abstract class Game implements ActionListener {
@@ -16,7 +15,6 @@ public abstract class Game implements ActionListener {
     private Timer timer;
     private final int FPS = 60;
 
-    protected Player player; // Bouger dans Solo ?
     protected Listener listener;
 
     /**
@@ -27,7 +25,7 @@ public abstract class Game implements ActionListener {
         this.window = window;
         this.listener = listener;
         this.timer = new Timer(1000 / FPS, this);
-        // initGame();
+        initGame();
         window.refresh();
     }
 
@@ -35,6 +33,7 @@ public abstract class Game implements ActionListener {
      * Débute la partie
      */
     public void start() {
+        listener.refresh();
         timer.start();
     }
 
@@ -58,12 +57,7 @@ public abstract class Game implements ActionListener {
      * Boucle de jeu principale
      */
     public void mainLoop() {
-        // Récupérer les données entrées par l'utilisateur
-        
-        // Mettre à jour le jeu
-        
         // Mettre à jour l'affichage
-        // window.getGameView().repaint();
         window.refresh();
     }
 
