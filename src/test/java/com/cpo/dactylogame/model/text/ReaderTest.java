@@ -1,4 +1,4 @@
-package com.cpo.dactylogame.model;
+package com.cpo.dactylogame.model.text;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;

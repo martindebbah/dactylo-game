@@ -6,33 +6,34 @@ public class Stat {
     private double prec; // Précision (= % de caractères utiles tapés)
     private double reg; // Régularité (= moyenne de temps en deux frappes de caractères utiles)
 
-    private int nChar; // Nombre de caractères utiles
-    private int nTyped; // Nombre total d'appuis de touches
+    private double nChar; // Nombre de caractères utiles
+    private double nTyped; // Nombre total d'appuis de touches
 
     // Nombres de caractères tapés temporaires
-    private int tmpChar;
-    private int tmpTyped;
+    private double tmpChar;
+    private double tmpTyped;
 
     private long startTime; // Le temps à partir duquel on commence à calculer, en milli-secondes
 
     // Temps temporaires en milli-secondes pour calcul de la régularité
     private long tmpReg;
-    private long tmpTime;
+    private long tmpTot;
     private long lastTime;
 
     /**
      * Initialise le temps pour le calcul des statistiques
+     * @param time Le temps en milli-secondes
      */
-    public void initTime() {
-        this.startTime = System.currentTimeMillis();
+    public void initTime(long time) {
+        this.startTime = time;
     }
 
     /**
      * Calcule les statistiques de la partie
+     * @param time Le temps actuel en milli-secondes
      */
-    public void calcData() {
-        long currentTime = System.currentTimeMillis();
-        long totalTime = (currentTime - startTime) / 60000; // Conversion de milli-secondes vers minutes
+    public void calcData(long time) {
+        double totalTime = (double) (time - startTime) / 60_000; // Conversion de milli-secondes vers minutes
         calcVit(totalTime);
         calcPrec();
         calcReg();
@@ -40,9 +41,9 @@ public class Stat {
 
     /**
      * Calcule la vitesse
-     * @param time Le temps actuel en minutes
+     * @param time Le temps total en minutes
      */
-    public void calcVit(long time) {
+    public void calcVit(double time) {
         vit = nChar / time / 5;
     }
 
@@ -57,20 +58,20 @@ public class Stat {
      * Calcule la régularité
      */
     public void calcReg() { // Pas sûr
-        reg = tmpReg / (nChar - 1);
+        reg = tmpTot / (nChar - 1);
     }
 
     /**
      * Ajoute un caractère temporaire
+     * @param time Le temps actuel en milli-secondes
      */
-    public void add() {
+    public void add(long time) {
         tmpChar++;
         tmpTyped++;
 
         // Régularité
-        tmpTime = System.currentTimeMillis();
-        tmpReg += tmpTime - lastTime;
-        lastTime = tmpTime;
+        tmpReg += time - lastTime;
+        lastTime = time;
     }
 
     /**
@@ -90,7 +91,7 @@ public class Stat {
     public void validate(boolean correct) {
         if (correct) {
             nChar += tmpChar;
-            reg += tmpReg;
+            tmpTot += tmpReg;
         }
         nTyped += tmpTyped;
         tmpChar = 0;

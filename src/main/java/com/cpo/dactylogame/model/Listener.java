@@ -2,12 +2,13 @@ package com.cpo.dactylogame.model;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Optional;
 
 import com.cpo.dactylogame.model.text.Text;
 
 public class Listener extends KeyAdapter {
 
-    // Stat optionnel
+    Optional<Stat> stat;
     private Text text; // différent en fonction du mode de jeu
     private String currentWord;
     private int index = 0;
@@ -15,7 +16,8 @@ public class Listener extends KeyAdapter {
     private boolean[] badChar;
     private int cptError = 0;
 
-    public Listener(Text text) { // stat optionnel en arg
+    public Listener(Text text) {
+        this.stat = Optional.empty();
         this.text = text;
         currentWord = text.getBuffer(); // text.currentWord()
         goodChar = new boolean[currentWord.length()];
@@ -31,6 +33,7 @@ public class Listener extends KeyAdapter {
     public void keyTyped(KeyEvent key) {
         if (currentWord.equals(""))
             return;
+        long time = System.currentTimeMillis();
         if (key.getKeyChar() == currentWord.charAt(index)){
             goodChar[index] = true;
             index++;
@@ -44,6 +47,7 @@ public class Listener extends KeyAdapter {
             if (index == currentWord.length()) 
                 refresh();
         }
+        add(time); // Pour tout char != del
         System.out.println("index: " + index);
         /*
          * ajouter une condition pour espace -> valider le mot
@@ -58,6 +62,22 @@ public class Listener extends KeyAdapter {
         badChar = new boolean[currentWord.length()];
         index = 0;
         // mettre à jour le nombre d'erreur dans le mot
+    }
+
+    public void add(long time) {
+        if (!stat.isPresent())
+            return;
+        stat.get().add(time);
+    }
+
+    public void supp() {
+        if (!stat.isPresent())
+            return;
+        stat.get().supp();
+    }
+
+    public void setStat(Optional<Stat> stat) {
+        this.stat = stat;
     }
 
     public Text getText() {
