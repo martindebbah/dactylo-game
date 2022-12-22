@@ -38,9 +38,6 @@ public class Solo extends Game {
      * Met à jour les coordonnées des mots
      */
     public void update() {
-        if (listener.nextWord())
-            updateWords();
-
         for (int i = 0; i < listener.getText().getNbWords(); i++) {
             if (wordsPos[i][1] < 600)
                 wordsPos[i][1] += 1;
@@ -50,7 +47,8 @@ public class Solo extends Game {
     /**
      * Met à jour le tableau de coordonnées quand on écrit un mot
      */
-    private void updateWords() {
+    @Override
+    public void updateWords() {
         if (listener.getText().getNbWords() > listener.getText().getBufferSize() / 2)
             listener.getText().addWord();
 
@@ -79,10 +77,10 @@ public class Solo extends Game {
      * super.mainloop()
      */
 
-    @Override
-    public void mainLoop() {
+     @Override
+     public void mainLoop() {
         update();
         super.mainLoop();
-    }
+     }
     
 }

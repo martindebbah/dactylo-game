@@ -34,10 +34,9 @@ public class Listener extends KeyAdapter {
         if (currentWord.equals(""))
             return;
         long time = System.currentTimeMillis();
-        
         if(key.getKeyCode() == KeyEvent.VK_SPACE){
             refresh();
-
+            
         }else if(index == currentWord.length()){
             if(key.getKeyCode() == KeyEvent.VK_BACK_SPACE){
                 if(errorWord.length() > 0){

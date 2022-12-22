@@ -57,9 +57,13 @@ public abstract class Game implements ActionListener {
      * Boucle de jeu principale
      */
     public void mainLoop() {
+        if (listener.nextWord())
+            updateWords();
         // Mettre à jour l'affichage
         window.refresh();
     }
+
+    public abstract void updateWords();
 
     /**
      * 

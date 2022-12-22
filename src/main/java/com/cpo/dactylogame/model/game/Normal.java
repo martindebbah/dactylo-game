@@ -54,5 +54,10 @@ public class Normal extends Game{
     public int getY(int index) {
         return 0;
     }
+
+    @Override
+    public void updateWords() {
+        listener.getText().addWord();
+    }
     
 }
