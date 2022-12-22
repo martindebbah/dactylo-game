@@ -88,5 +88,8 @@ public abstract class Game implements ActionListener {
     public Window getWindow() {
         return window;
     }
+
+    public abstract int getX(int i);
+    public abstract int getY(int i);
     
 }

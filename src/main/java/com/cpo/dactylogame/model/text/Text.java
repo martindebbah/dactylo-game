@@ -64,6 +64,14 @@ public class Text {
 
     /**
      * 
+     * @return Le nombre de mots dans le buffer
+     */
+    public int getNbWords() {
+        return words.size();
+    }
+
+    /**
+     * 
      * @return True si tous les mots ont été écrits
      */
     public boolean isEmpty() {
@@ -71,7 +79,7 @@ public class Text {
     }
 
     /**
-     * Peut-être inutile
+     *
      * @return True si le buffer est plein ou qu'on ne peut plus lire de mot
      */
     public boolean isFull() {
@@ -90,6 +98,18 @@ public class Text {
             buf += (i == 0 ? "" : " ") + (i % 3 == 0 && i != 0 ? "\n" : "") + words.get(i);
         } // Pas forcément besoin des retours à la ligne
         return buf;
+    }
+
+    /**
+     * 
+     * @return Le buffer sous forme de liste
+     */
+    public LinkedList<String> getList() {
+        return words;
+    }
+
+    public String get(int index) {
+        return words.get(index);
     }
 
     /**

@@ -16,6 +16,8 @@ public class Listener extends KeyAdapter {
     private boolean[] badChar;
     private int cptError = 0;
 
+    private boolean next = false;
+
     public Listener(Text text) {
         this.stat = Optional.empty();
         this.text = text;
@@ -34,19 +36,27 @@ public class Listener extends KeyAdapter {
         if (currentWord.equals(""))
             return;
         long time = System.currentTimeMillis();
-        if (key.getKeyChar() == currentWord.charAt(index)){
+
+        if (key.getKeyChar() == ' ') {
+            next = true;
+            refresh();
+
+        }else if (key.getKeyCode() == 127) {
+            
+        }else if (key.getKeyChar() == currentWord.charAt(index)){
             goodChar[index] = true;
             index++;
             if (index == currentWord.length()) 
                 refresh();
-        }
-        else {
+
+        }else {
             badChar[index] = true;
             cptError++;
             index++;
             if (index == currentWord.length()) 
                 refresh();
         }
+
         add(time); // Pour tout char != del
         System.out.println("index: " + index);
         /*
@@ -103,6 +113,18 @@ public class Listener extends KeyAdapter {
     public int getCptError() {
         // remettre le nombre à 0 avant de le retourner ?
         return cptError;
+    }
+
+    /**
+     * 
+     * @return True si on doit passer au prochain mot
+     */
+    public boolean nextWord() {
+        if (next) {
+            next = false;
+            return true;
+        }
+        return false;
     }
     
 }

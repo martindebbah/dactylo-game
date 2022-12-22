@@ -4,7 +4,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 
 import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
@@ -12,7 +11,6 @@ import com.cpo.dactylogame.model.text.Text;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
-import java.util.Dictionary;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.GridBagConstraints;
@@ -86,8 +84,8 @@ public class Menu extends JPanel{
         JPanel textButtons = new JPanel(new GridBagLayout());
         textButtons.setOpaque(false);
 
-        createParamButton("Aléatoire", e -> {param.setText(new Text(""));}, textButtons, buttonsGbc);
-        createParamButton("Le Seigneur des Anneaux", e -> {param.setText(new Text("lotr"));}, textButtons, buttonsGbc);
+        createParamButton("Aléatoire", e -> {param.setText("");}, textButtons, buttonsGbc);
+        createParamButton("Le Seigneur des Anneaux", e -> {param.setText("lotr");}, textButtons, buttonsGbc);
 
         textPanel.add(textLabel, panelGbc);
         textPanel.add(textButtons, panelGbc);

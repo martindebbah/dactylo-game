@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 import com.cpo.dactylogame.model.game.Game;
+import com.cpo.dactylogame.model.text.Text;
 
 public abstract class GameView extends JPanel{
     
@@ -35,6 +36,34 @@ public abstract class GameView extends JPanel{
      * Méthode qui affiche le jeu en fonction du mode de jeu
      */
     public abstract void draw(java.awt.Graphics g);
+
+    public void drawWord(Graphics g, String word, int x, int y) {
+        g.setFont(nicoPaintReg);
+        g.setColor(Color.YELLOW);
+        g.setFont(g.getFont().deriveFont(30f));
+
+        char[] c = word.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            if(game.getListener().getGoodChar()[i]){
+                g.setColor(Color.GREEN);
+            }
+            else if(game.getListener().getBadChar()[i]){
+                g.setColor(Color.RED);
+            }
+            else {
+                g.setColor(Color.YELLOW);
+            }
+
+            g.drawString(String.valueOf(c[i]), x, y);
+            x += 25;
+        }
+    }
+
+    @Override
+    public void paintComponent(java.awt.Graphics g) {
+        super.paintComponent(g);
+        draw(g);
+    }
 
     static class NormalView extends GameView {
 
@@ -73,12 +102,6 @@ public abstract class GameView extends JPanel{
                 }
             }
         }
-
-        @Override
-        public void paintComponent(java.awt.Graphics g) {
-            super.paintComponent(g);
-            draw(g);
-        }
         
     }
 
@@ -90,9 +113,12 @@ public abstract class GameView extends JPanel{
 
         @Override
         public void draw(java.awt.Graphics g) {
-            
+            Text t = game.getListener().getText();
+            for (int i = 0; i < t.getList().size(); i++) {
+                drawWord(g, t.get(i), game.getX(i), game.getY(i));
+            }
         }
-        
+
     }
 
 }

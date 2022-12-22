@@ -19,7 +19,7 @@ public class Normal extends Game{
     }
 
     public Normal(Window window, Parametres parametres) {
-        super(window, new Listener(parametres.getText()));
+        super(window, new Listener(new Text(parametres.getText())));
         this.param = parametres;
     }
     
@@ -44,6 +44,14 @@ public class Normal extends Game{
     public void gameOver() {
         stat.calcData(System.currentTimeMillis());
         super.gameOver();
+    }
+
+    public int getX(int index) {
+        return 0;
+    }
+
+    public int getY(int index) {
+        return 0;
     }
     
 }

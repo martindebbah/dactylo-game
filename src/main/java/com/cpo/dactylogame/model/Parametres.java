@@ -1,25 +1,23 @@
 package com.cpo.dactylogame.model;
 
-import com.cpo.dactylogame.model.text.Text;
-
 public class Parametres {
 
-    private Text text;
+    private String text;
     private double speed;
     private int bonusFreq;
     private int malusFreq;
     
     public Parametres() {
-        this.text = new Text("");
+        this.text = "";
         this.speed = 1;
         this.bonusFreq = 0;
     }
     
-    public Text getText() {
+    public String getText() {
         return text;
     }
     
-    public void setText(Text text) {
+    public void setText(String text) {
         this.text = text;
     }
     
