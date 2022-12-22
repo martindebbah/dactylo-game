@@ -140,8 +140,9 @@ public class Listener extends KeyAdapter {
     }
 
     public int getCptError() {
-        // remettre le nombre à 0 avant de le retourner ?
-        return cptError;
+        int x = cptError;
+        cptError = 0;
+        return x;
     }
 
     public String getErrorWord() {

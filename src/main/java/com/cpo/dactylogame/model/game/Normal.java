@@ -58,6 +58,7 @@ public class Normal extends Game{
     @Override
     public void updateWords() {
         listener.getText().addWord();
+        stat.validate(listener.getCptError() == 0);
     }
     
 }

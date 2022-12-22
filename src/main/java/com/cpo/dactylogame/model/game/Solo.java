@@ -1,7 +1,7 @@
 package com.cpo.dactylogame.model.game;
 
 import java.util.Random;
-import java.util.Timer;
+import javax.swing.Timer;
 
 import com.cpo.dactylogame.model.Listener;
 import com.cpo.dactylogame.model.Parametres;
@@ -13,7 +13,8 @@ public class Solo extends Game {
 
     private Player player;
     private int[][] wordsPos; // [n][pos] -> pour le n-ième mot du texte pos = [x][y]
-    private int level;
+    private int level = 1;
+    private int nWritten;
     private Timer timerAdd;
 
     public Solo(Window window) {
@@ -34,8 +35,10 @@ public class Solo extends Game {
     @Override
     public void initGame() {
         this.wordsPos = new int[15][2];
-        updateWords();
+        this.timerAdd = new Timer(delay(), e -> {add();});
+        add();
         listener.initGame();
+        timerAdd.start();
     }
 
     /**
@@ -60,6 +63,21 @@ public class Solo extends Game {
             add();
 
         listener.refreshWord();
+
+        int nError = listener.getCptError();
+        if (nError == 0)
+            nWritten++;
+
+        if (nWritten % 100 == 0) {
+            level++;
+            timerAdd.setDelay(delay());
+        }
+
+        player.loseHp(nError);
+    }
+
+    private int delay() {
+        return (int) (3 * Math.pow(0.9, level) * 1000);
     }
 
     /**
@@ -94,6 +112,6 @@ public class Solo extends Game {
      public void mainLoop() {
         update();
         super.mainLoop();
-     }
+    }
     
 }

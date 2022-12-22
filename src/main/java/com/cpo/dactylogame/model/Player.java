@@ -10,6 +10,10 @@ public class Player {
         this.hp = 100;
     }
 
+    public void loseHp(int dmg) {
+        hp -= dmg;
+    }
+
     public String getName() {
         return name;
     }
