@@ -11,9 +11,8 @@ public class Listener extends KeyAdapter {
     Optional<Stat> stat;
     private Text text; // différent en fonction du mode de jeu
     private String currentWord = "";
-    private int currentWordIndex = 0;
     private int index = 0;
-    private int[][] goodOrBadChar;
+    private int[] goodOrBadChar;
     private int cptError = 0;
     private String errorWord = "";
     //private LinkedList<String> errorWord = new LinkedList<String>();
@@ -36,23 +35,25 @@ public class Listener extends KeyAdapter {
         long time = System.currentTimeMillis();
         if(key.getKeyCode() == KeyEvent.VK_SPACE){
             refresh();
-            
-        }else if(index == currentWord.length()){
+        }
+        else if(index == currentWord.length()){
             if(key.getKeyCode() == KeyEvent.VK_BACK_SPACE){
                 if(errorWord.length() > 0){
                     errorWord = errorWord.substring(0, errorWord.length() - 1);
                 } else {
                     if(index > 0) index--;
-                    goodOrBadChar[currentWordIndex][index] = 0;
+                    goodOrBadChar[index] = 0;
                 }
+                supp();
             }
-            else{
+            else if(errorWord.length() <= 8){
                 cptError++;
                 errorWord += key.getKeyChar();
             }
         }else if(key.getKeyCode() == KeyEvent.VK_BACK_SPACE){
             if(index > 0) index--;
-            goodOrBadChar[currentWordIndex][index] = 0;
+            goodOrBadChar[index] = 0;
+            supp();
         }
         else if (key.getKeyChar() == currentWord.charAt(index)){
             goodChar();
@@ -71,33 +72,26 @@ public class Listener extends KeyAdapter {
     }
 
     public void initGame(){
-        String word = text.getWords().get(currentWordIndex);
-        currentWord = word;
-        goodOrBadChar = new int[text.getWords().size()][];
-        for(int i = 0; i < goodOrBadChar.length; i++)
-            goodOrBadChar[i] = new int[text.getWords().get(i).length()];
+        currentWord = text.removeFirst();
+        goodOrBadChar = new int[currentWord.length()];
         index = 0;
     }
 
     public void goodChar(){
-        goodOrBadChar[currentWordIndex][index] = 1;
+        goodOrBadChar[index] = 1;
         index++;
     }
 
     public void badChar(){
-        goodOrBadChar[currentWordIndex][index] = -1;
+        goodOrBadChar[index] = -1;
         cptError++;
     }
 
     public void refresh() {
-        currentWordIndex++;
-        if (currentWordIndex == text.getWords().size()) {
-            currentWord = "";
-            return;
-        }
-        String word = text.get(currentWordIndex);
-        currentWord = word;
+        currentWord = text.removeFirst();
+        goodOrBadChar = new int[currentWord.length()];
         index = 0;
+        errorWord = "";
         System.out.println("refresh");
         // mettre à jour le nombre d'erreur dans le mot
     }
@@ -130,7 +124,7 @@ public class Listener extends KeyAdapter {
         this.currentWord = currentWord;
     }
 
-    public int[][] getGoodOrBadChar() {
+    public int[] getGoodOrBadChar() {
         return goodOrBadChar;
     }
 
@@ -139,14 +133,13 @@ public class Listener extends KeyAdapter {
         return cptError;
     }
 
-    public int getCurrentWordIndex() {
-        return currentWordIndex;
-    }
-
     public String getErrorWord() {
         return errorWord;
     }
-    
+
+    public int getIndex() {
+        return index;
+    }
 
     /**
      * 
