@@ -6,16 +6,17 @@ import java.awt.event.ActionEvent;
 import javax.swing.Timer;
 
 import com.cpo.dactylogame.model.Listener;
+import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.view.Window;
 
 public abstract class Game implements ActionListener {
 
     protected Window window;
-    // private Param param;
     private Timer timer;
     private final int FPS = 60;
-
+    
     protected Listener listener;
+    protected Parametres param;
 
     /**
      * Crée un objet jeu

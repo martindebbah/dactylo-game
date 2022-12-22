@@ -1,6 +1,7 @@
 package com.cpo.dactylogame.model.game;
 
 import com.cpo.dactylogame.model.Listener;
+import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.Player;
 import com.cpo.dactylogame.model.text.Text;
 import com.cpo.dactylogame.view.Window;
@@ -11,6 +12,11 @@ public class Solo extends Game {
 
     public Solo(Window window) {
         super(window, new Listener(new Text("")));
+    }
+
+    public Solo(Window window, Parametres parametres) {
+        super(window, new Listener(parametres.getText()));
+        this.param = parametres;
     }
 
     @Override
