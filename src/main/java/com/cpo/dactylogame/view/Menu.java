@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 
 import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
-import com.cpo.dactylogame.model.text.Text;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;

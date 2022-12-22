@@ -72,7 +72,7 @@ public class Listener extends KeyAdapter {
     }
 
     public void initGame(){
-        currentWord = text.removeFirst();
+        currentWord = text.currentWord();
         goodOrBadChar = new int[currentWord.length()];
         index = 0;
     }
@@ -88,12 +88,23 @@ public class Listener extends KeyAdapter {
     }
 
     public void refresh() {
-        currentWord = text.removeFirst();
+        text.removeFirst();
+        next = true;
+        if (text.getWords().size() != 0)
+            refreshWord();
+
+        System.out.println("refresh");
+        // mettre à jour le nombre d'erreur dans le mot
+    }
+
+    /**
+     * Change le mot courant
+     */
+    public void refreshWord() {
+        currentWord = text.currentWord();
         goodOrBadChar = new int[currentWord.length()];
         index = 0;
         errorWord = "";
-        System.out.println("refresh");
-        // mettre à jour le nombre d'erreur dans le mot
     }
 
     public void add(long time) {

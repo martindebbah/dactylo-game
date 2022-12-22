@@ -1,5 +1,8 @@
 package com.cpo.dactylogame.model.game;
 
+import java.util.Random;
+import java.util.Timer;
+
 import com.cpo.dactylogame.model.Listener;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.Player;
@@ -10,6 +13,8 @@ public class Solo extends Game {
 
     private Player player;
     private int[][] wordsPos; // [n][pos] -> pour le n-ième mot du texte pos = [x][y]
+    private int level;
+    private Timer timerAdd;
 
     public Solo(Window window) {
         super(window, new Listener(new Text("")));
@@ -29,7 +34,6 @@ public class Solo extends Game {
     @Override
     public void initGame() {
         this.wordsPos = new int[15][2];
-        listener.getText().addWord();
         updateWords();
         listener.initGame();
     }
@@ -38,20 +42,13 @@ public class Solo extends Game {
      * Met à jour les coordonnées des mots
      */
     public void update() {
-        for (int i = 0; i < listener.getText().getNbWords(); i++) {
+        for (int i = 0; i < listener.getText().getNbWords(); i++)
             if (wordsPos[i][1] < 600)
                 wordsPos[i][1] += 1;
-        }
     }
 
-    /**
-     * Met à jour le tableau de coordonnées quand on écrit un mot
-     */
     @Override
     public void updateWords() {
-        if (listener.getText().getNbWords() > listener.getText().getBufferSize() / 2)
-            listener.getText().addWord();
-
         for (int i = 0; i < wordsPos.length - 1; i++) {
             wordsPos[i][0] = wordsPos[i + 1][0];
             wordsPos[i][1] = wordsPos[i + 1][1];
@@ -59,8 +56,30 @@ public class Solo extends Game {
         wordsPos[wordsPos.length - 1][0] = 0;
         wordsPos[wordsPos.length - 1][1] = 0;
 
-        wordsPos[listener.getText().getNbWords() - 1][0] = 150;
-        wordsPos[listener.getText().getNbWords() - 1][1] = 0;
+        if (listener.getText().getNbWords() < listener.getText().getBufferSize() / 2)
+            add();
+
+        listener.refreshWord();
+    }
+
+    /**
+     * Ajoute un mot avec de nouvelles positions
+     */
+    private void add() {
+        if (listener.getText().isFull())
+            listener.refresh(); // Force la validation du mot en cours si la file est pleine
+
+        listener.getText().addWord();
+        // Gérer ici la fréquence de bonus
+
+        int i = listener.getText().getNbWords() - 1; // La position dans la liste du mot ajouté
+        int min = 150;
+        int max = 1000;
+        Random random = new Random();
+
+        // On positionne le mot 
+        wordsPos[i][0] = random.nextInt(max - min) + min;
+        wordsPos[i][1] = 0;
     }
 
     public int getX(int index) {
@@ -70,12 +89,6 @@ public class Solo extends Game {
     public int getY(int index) {
         return wordsPos[index][1];
     }
-
-    /*
-     * override mainloop()
-     * player.loseHP(listener.getCptError());
-     * super.mainloop()
-     */
 
      @Override
      public void mainLoop() {

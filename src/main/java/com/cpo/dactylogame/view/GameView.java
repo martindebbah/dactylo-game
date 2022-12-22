@@ -61,7 +61,16 @@ public abstract class GameView extends JPanel{
             else if(c[i] == 'm') x += 27;
             else x += 20;
         }
+        if (!current)
+            return x;
 
+        for(int k = 0; k < game.getListener().getErrorWord().length(); k++){
+            g.setColor(Color.RED);
+            g.drawString(game.getListener().getErrorWord().charAt(k) + "", x, y);
+            if(game.getListener().getErrorWord().charAt(k) == 'i' || game.getListener().getErrorWord().charAt(k) == 'l') x += 14;
+            else if(game.getListener().getErrorWord().charAt(k) == 'm') x += 27;                        
+            else x += 22;
+        }
         return x;
     }
 
@@ -86,15 +95,10 @@ public abstract class GameView extends JPanel{
             int y = rect.y;
 
             x = drawWord(g, game.getListener().getCurrentWord(), x, y, true);
-            for(int k = 0; k < game.getListener().getErrorWord().length(); k++){
-                g.setColor(Color.RED);
-                g.drawString(game.getListener().getErrorWord().charAt(k) + "", x, y);
-                if(game.getListener().getErrorWord().charAt(k) == 'i' || game.getListener().getErrorWord().charAt(k) == 'l') x += 14;
-                else if(game.getListener().getErrorWord().charAt(k) == 'm') x += 27;                        
-                else x += 22;
-            }
+            
             x += 20;
-            for(String s : game.getListener().getText().getWords()){
+            for (int i = 1; i < game.getListener().getText().getNbWords(); i++) {
+                String s = game.getListener().getText().get(i);
                 if(x + s.length() > rect.x + rect.width){
                     x = rect.x;
                     y += 30;

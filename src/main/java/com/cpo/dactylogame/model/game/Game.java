@@ -48,6 +48,7 @@ public abstract class Game implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (isGameOver()) { // La partie est finie, on arête le jeu
             gameOver();
+            return;
         }
         // La partie continue
         mainLoop();
@@ -63,6 +64,9 @@ public abstract class Game implements ActionListener {
         window.refresh();
     }
 
+    /**
+     * Ajoute un mot au buffer en fonction du mode de jeu
+     */
     public abstract void updateWords();
 
     /**
@@ -92,7 +96,18 @@ public abstract class Game implements ActionListener {
         return window;
     }
 
+    /**
+     * 
+     * @param i L'index du mot voulu
+     * @return La position x du mot à l'index donné
+     */
     public abstract int getX(int i);
+
+    /**
+     * 
+     * @param i L'index du mot voulu
+     * @return La position y du mot à l'index donné
+     */
     public abstract int getY(int i);
     
 }
