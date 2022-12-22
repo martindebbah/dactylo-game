@@ -29,7 +29,7 @@ public class Text {
         if (words.size() >= BUFFERSIZE)
             return;
         if (iterator.hasNext())
-            words.add(iterator.next());
+            words.add(iterator.next()+" ");
     }
 
     /**
@@ -98,6 +98,10 @@ public class Text {
      */
     public int getBufferSize() {
         return BUFFERSIZE;
+    }
+
+    public LinkedList<String> getWords() {
+        return words;
     }
     
 }

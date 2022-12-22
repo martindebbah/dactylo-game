@@ -33,7 +33,6 @@ public abstract class Game implements ActionListener {
      * Débute la partie
      */
     public void start() { // Appeler lors de la première frappe de touche pour lancer le timer et le calcul de stat
-        listener.refresh(); // Donc peut être faire ça dans le constructeur pour que le texte soit affiché avant
         timer.start();
     }
 
