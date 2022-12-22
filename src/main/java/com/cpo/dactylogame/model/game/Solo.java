@@ -31,6 +31,7 @@ public class Solo extends Game {
         this.wordsPos = new int[15][2];
         listener.getText().addWord();
         updateWords();
+        listener.initGame();
     }
 
     /**
@@ -40,7 +41,7 @@ public class Solo extends Game {
         if (listener.nextWord())
             updateWords();
 
-        for (int i = 0; i < listener.getText().getList().size(); i++) {
+        for (int i = 0; i < listener.getText().getNbWords(); i++) {
             if (wordsPos[i][1] < 600)
                 wordsPos[i][1] += 1;
         }

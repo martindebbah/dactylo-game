@@ -102,12 +102,9 @@ public class Text {
 
     /**
      * 
-     * @return Le buffer sous forme de liste
+     * @param index L'index du mot voulu
+     * @return Le mot à l'index donné
      */
-    public LinkedList<String> getList() {
-        return words;
-    }
-
     public String get(int index) {
         return words.get(index);
     }
@@ -118,6 +115,10 @@ public class Text {
      */
     public int getBufferSize() {
         return BUFFERSIZE;
+    }
+
+    public LinkedList<String> getWords() {
+        return words;
     }
     
 }

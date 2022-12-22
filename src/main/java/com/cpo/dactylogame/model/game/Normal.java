@@ -33,6 +33,7 @@ public class Normal extends Game{
     public void initGame() {
         while (!listener.getText().isFull())
             listener.getText().addWord();
+        listener.initGame();
     }
     
     @Override
