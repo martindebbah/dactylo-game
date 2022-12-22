@@ -41,14 +41,13 @@ public class Listener extends KeyAdapter {
             if(key.getKeyCode() == KeyEvent.VK_BACK_SPACE){
                 if(errorWord.length() > 0){
                     errorWord = errorWord.substring(0, errorWord.length() - 1);
-                    goodOrBadChar[currentWordIndex][index] = 0;
                 } else {
                     if(index > 0) index--;
                     goodOrBadChar[currentWordIndex][index] = 0;
                 }
             }
             else{
-                badChar();
+                cptError++;
                 errorWord += key.getKeyChar();
             }
         }else if(key.getKeyCode() == KeyEvent.VK_BACK_SPACE){
