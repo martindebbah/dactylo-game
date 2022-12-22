@@ -93,6 +93,10 @@ public abstract class GameView extends JPanel{
                     else {
                         g.setColor(Color.YELLOW);
                     }
+                    g.drawString(game.getListener().getText().get(i).charAt(j) + "", x, y);
+                    if(game.getListener().getText().get(i).charAt(j) == 'i' || game.getListener().getText().getWords().get(i).charAt(j) == 'l') x += 12;
+                    else if(game.getListener().getText().get(i).charAt(j) == 'm') x += 27;
+                    else x += 20;
                     if(game.getListener().getGoodOrBadChar()[i].length-1 == j && i == game.getListener().getCurrentWordIndex()){
                         for(int k = 0; k < game.getListener().getErrorWord().length(); k++){
                             g.setColor(Color.RED);
@@ -102,12 +106,8 @@ public abstract class GameView extends JPanel{
                             else x += 22;
                         }
                     }
-                    g.drawString(game.getListener().getText().get(i).charAt(j) + "", x, y);
-                    if(game.getListener().getText().get(i).charAt(j) == 'i' || game.getListener().getText().getWords().get(i).charAt(j) == 'l') x += 14;
-                    else if(game.getListener().getText().get(i).charAt(j) == 'm') x += 27;
-                    else x += 22;
                 }
-                x += 5;
+                x += 30;
                 if(i != 0 && i % 4 == 0){
                     x = rect.x;
                     y += 30;
