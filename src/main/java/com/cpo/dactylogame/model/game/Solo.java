@@ -45,13 +45,27 @@ public class Solo extends Game {
      * Met à jour les coordonnées des mots
      */
     public void update() {
-        for (int i = 0; i < listener.getText().getNbWords(); i++)
-            if (wordsPos[i][1] < 600)
+        for (int i = 0; i < listener.getText().getNbWords(); i++) {
+            boolean move = true;
+            for (int j = 0; j < i; j++)
+                move = move ? !isAbove(i, j) : false;
+            if (wordsPos[i][1] < 600 && move)
                 wordsPos[i][1] += 1;
+        }
+    }
+
+    private boolean isAbove(int word1, int word2) {
+        int start1 = wordsPos[word1][0];
+        int end1 = wordsPos[word1][0] + listener.getText().get(word1).length() * 25;
+        int start2 = wordsPos[word2][0];
+        int end2 = wordsPos[word2][0] + listener.getText().get(word2).length() * 25;
+
+        return start1 < end2 && end1 > start2 && wordsPos[word1][1] + 35 >= wordsPos[word2][1];
     }
 
     @Override
     public void updateWords() {
+        // On change toutes les positions pour qu'elles soient au même index que les mots
         for (int i = 0; i < wordsPos.length - 1; i++) {
             wordsPos[i][0] = wordsPos[i + 1][0];
             wordsPos[i][1] = wordsPos[i + 1][1];
@@ -59,21 +73,24 @@ public class Solo extends Game {
         wordsPos[wordsPos.length - 1][0] = 0;
         wordsPos[wordsPos.length - 1][1] = 0;
 
+        // Si le buffer est rempli à moins de 50%, on ajoute un mot
         if (listener.getText().getNbWords() < listener.getText().getBufferSize() / 2)
             add();
 
+        // On change le mot courant
         listener.refreshWord();
 
+        // On récupère le nombre d'erreurs
         int nError = listener.getCptError();
-        if (nError == 0)
-            nWritten++;
+        if (nError == 0) // Pas d'erreur
+            nWritten++; // On incrémente le nombre de mots écrits sans erreur
 
-        if (nWritten % 100 == 0) {
-            level++;
-            timerAdd.setDelay(delay());
+        if (nWritten % 100 == 0) { // Tous les 100 mots sans erreur
+            level++; // On monte d'un niveau
+            timerAdd.setDelay(delay()); // Et on change la vitesse du jeu
         }
 
-        player.loseHp(nError);
+        player.loseHp(nError); // Le joueur perd des pdv
     }
 
     private int delay() {
@@ -91,12 +108,19 @@ public class Solo extends Game {
         // Gérer ici la fréquence de bonus
 
         int i = listener.getText().getNbWords() - 1; // La position dans la liste du mot ajouté
+        int wordLength = (listener.getText().get(i).length()) * 25;
+        // Taille du mot en pixels
+
         int min = 150;
-        int max = 1000;
-        Random random = new Random();
+        int max = 850;
+
+        // Pour que le mot ne dépasse pas à droite de l'écran
+        int x = new Random().nextInt(max - min) + min;
+        if (x + wordLength > max)
+            x = max - wordLength;
 
         // On positionne le mot 
-        wordsPos[i][0] = random.nextInt(max - min) + min;
+        wordsPos[i][0] = x;
         wordsPos[i][1] = 0;
     }
 

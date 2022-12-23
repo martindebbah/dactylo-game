@@ -121,8 +121,12 @@ public abstract class GameView extends JPanel{
         public void draw(java.awt.Graphics g) {
             Text t = game.getListener().getText();
             for (int i = 0; i < t.getNbWords(); i++) {
-                drawWord(g, t.get(i), game.getX(i), game.getY(i), i == 0);
+                int x = drawWord(g, t.get(i), game.getX(i), game.getY(i), i == 0);
+                if (i == 0)
+                    g.drawRect(game.getX(i) - 5, game.getY(i) - 25, x - game.getX(i) + 5, 35);
             }
+            g.drawRect(150, 500, 10, 10);
+            g.drawRect(850, 500, 10, 10);
         }
 
     }
