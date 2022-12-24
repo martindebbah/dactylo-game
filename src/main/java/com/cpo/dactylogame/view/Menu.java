@@ -8,11 +8,8 @@ import javax.swing.JPanel;
 import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
 
-import java.awt.Color;
 import java.awt.event.ActionListener;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.GridBagConstraints;
+import java.awt.*;
 
 public class Menu extends JPanel{
 
@@ -47,7 +44,7 @@ public class Menu extends JPanel{
         // Boutons
         createButton("Jouer", e -> {choiceGame();});
         createButton("Paramètres", e -> {param();});
-        createButton("Quitter", e -> {window.dispose();});
+        createButton("Quitter", e -> {window.quit();});
 
         window.refresh();
     }

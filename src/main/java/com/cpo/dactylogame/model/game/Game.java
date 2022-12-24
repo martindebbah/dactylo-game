@@ -25,6 +25,7 @@ public abstract class Game implements ActionListener {
     public Game(Window window, Listener listener) {
         this.window = window;
         this.listener = listener;
+        this.param = new Parametres();
         this.timer = new Timer(1000 / FPS, this);
         initGame();
         window.refresh();

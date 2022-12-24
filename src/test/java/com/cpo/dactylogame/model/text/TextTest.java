@@ -3,8 +3,6 @@ package com.cpo.dactylogame.model.text;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
-import com.cpo.dactylogame.model.text.Text;
-
 public class TextTest {
 
     private Text text;

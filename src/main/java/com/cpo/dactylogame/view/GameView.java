@@ -31,6 +31,7 @@ public abstract class GameView extends JPanel {
 
         setSize(game.getWindow().getSize());
         setBackground(new Color(50, 50, 50));
+        setLayout(new GridBagLayout());
 
         game.start();
     }
@@ -39,8 +40,12 @@ public abstract class GameView extends JPanel {
         gameOver = true;
 
         JButton back = new JButton("Retour au menu principal");
-        back.addActionListener(e -> {game.getWindow().setMenu();});
-        add(back);
+        back.addActionListener(e -> {
+            game.getWindow().setMenu();
+        });
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        add(back, gbc);
     }
 
     /**
@@ -161,7 +166,7 @@ public abstract class GameView extends JPanel {
         }
 
         @Override
-        public void draw(java.awt.Graphics g) {
+        public void draw(Graphics g) {
             g.setFont(g.getFont().deriveFont(25f));
             
             Text t = game.getListener().getText();
@@ -170,10 +175,15 @@ public abstract class GameView extends JPanel {
                 int x = drawWord(g, t.get(i), game.getX(i), game.getY(i), i == 0);
                 if (i == 0)
                     g.drawRect(game.getX(i) - 5, game.getY(i) - 25, x - game.getX(i) + 5, 35);
-            }
-            g.drawRect(150, 500, 10, 10);
-            g.drawRect(850, 500, 10, 10);
 
+                g.setColor(new Color(14, 204, 216));
+                if (((Solo) game).isBonus(i))
+                    g.drawLine(game.getX(i) - 5, game.getY(i) + 10, x, game.getY(i) + 10);
+            }
+            // g.drawRect(150, 500, 10, 10);
+            // g.drawRect(850, 500, 10, 10);
+
+            g.setColor(Color.YELLOW);
             drawWord(g, "Points de vie restants : " + ((Solo) game).getHp() + " | Niveau " + ((Solo) game).getLevel(),
             100, 650, false);
         }
@@ -182,6 +192,9 @@ public abstract class GameView extends JPanel {
         public void drawGameOver(Graphics g) {
             int nWritten = ((Solo) game).getNbWords();
             int level = ((Solo) game).getLevel();
+
+            g.setFont(g.getFont().deriveFont(25f));
+            g.setColor(Color.YELLOW);
             
             drawWord(g, "Vous avez atteint le niveau " + level, 150, 150, false);
             drawWord(g, "Vous avez écrit " + nWritten + " mots correctement", 170, 170, false);

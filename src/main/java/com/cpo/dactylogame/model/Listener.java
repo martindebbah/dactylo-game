@@ -14,6 +14,8 @@ public class Listener extends KeyAdapter {
     private int index = 0;
     private int[] goodOrBadChar;
     private int cptError = 0;
+    private int hpToHeal = 0;
+    private boolean firstTry = true;
     private String errorWord = "";
     //private LinkedList<String> errorWord = new LinkedList<String>();
 
@@ -90,6 +92,7 @@ public class Listener extends KeyAdapter {
     public void refresh() {
         text.removeFirst();
         next = true;
+        calcError();
         if (text.getWords().size() != 0)
             refreshWord();
 
@@ -107,6 +110,15 @@ public class Listener extends KeyAdapter {
         errorWord = "";
     }
 
+    private void calcError() {
+        for (int i = 0; i < goodOrBadChar.length; i++)
+            if (goodOrBadChar[i] == 1)
+                hpToHeal++;
+            else
+                cptError++;
+        cptError += errorWord.length();
+    }
+
     public void add(long time) {
         if (!stat.isPresent())
             return;
@@ -114,6 +126,7 @@ public class Listener extends KeyAdapter {
     }
 
     public void supp() {
+        firstTry = false;
         if (!stat.isPresent())
             return;
         stat.get().supp();
@@ -142,6 +155,13 @@ public class Listener extends KeyAdapter {
     public int getCptError() {
         int x = cptError;
         cptError = 0;
+        return x;
+    }
+
+    public int getHpToHeal() {
+        int x = hpToHeal;
+        hpToHeal = 0;
+        firstTry = true;
         return x;
     }
 

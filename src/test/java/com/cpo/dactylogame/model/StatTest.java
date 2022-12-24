@@ -67,7 +67,6 @@ public class StatTest {
 
     @Test
     public void testCalcReg() {
-        long initTime = 0;
         long time = 1_000;
         long currentTime = 0;
 

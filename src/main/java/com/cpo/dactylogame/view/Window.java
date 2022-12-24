@@ -75,5 +75,9 @@ public class Window extends JFrame {
         gameView.gameOver();
         refresh();
     }
+
+    public void quit() {
+        System.exit(0);
+    }
     
 }

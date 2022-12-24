@@ -13,6 +13,7 @@ public class Solo extends Game {
 
     private Player player;
     private int[][] wordsPos; // [n][pos] -> pour le n-ième mot du texte pos = [x][y]
+    private int[] bonus;
     private int level = 1;
     private int nWritten;
     private Timer timerAdd;
@@ -41,6 +42,7 @@ public class Solo extends Game {
     @Override
     public void initGame() {
         this.wordsPos = new int[15][2];
+        this.bonus = new int[15];
         this.timerAdd = new Timer(delay(), e -> {add();});
         add();
         listener.initGame();
@@ -79,6 +81,8 @@ public class Solo extends Game {
         wordsPos[wordsPos.length - 1][0] = 0;
         wordsPos[wordsPos.length - 1][1] = 0;
 
+        int hpToHeal = listener.getHpToHeal();
+
         // Si le buffer est rempli à moins de 50%, on ajoute un mot
         if (listener.getText().getNbWords() < listener.getText().getBufferSize() / 2)
             add();
@@ -95,9 +99,16 @@ public class Solo extends Game {
                 level++; // On monte d'un niveau
                 timerAdd.setDelay(delay()); // Et on change la vitesse du jeu
             }
+
+            if (bonus[0] == 1) { // Le mot qu'on vient d'écrire est un mot bonus
+                player.heal(hpToHeal);
+            }
         }else {
             player.loseHp(nError); // Le joueur perd des pdv
         }
+
+        for (int i = 0; i < bonus.length; i++)
+            bonus[i] = i != bonus.length - 1 ? bonus[i + 1] : 0;
     }
 
     private int delay() {
@@ -112,7 +123,11 @@ public class Solo extends Game {
             listener.refresh(); // Force la validation du mot en cours si la file est pleine
 
         listener.getText().addWord();
-        // Gérer ici la fréquence de bonus
+
+        // Fréquence de bonus
+        double freq = param.getBonusFreq();
+        if (new Random().nextInt(100) < freq)
+            bonus[listener.getText().getNbWords()] = 1;
 
         int i = listener.getText().getNbWords() - 1; // La position dans la liste du mot ajouté
         int wordLength = (listener.getText().get(i).length()) * 25;
@@ -149,6 +164,10 @@ public class Solo extends Game {
 
     public int getLevel() {
         return level;
+    }
+
+    public boolean isBonus(int index) {
+        return bonus[index] == 1;
     }
 
      @Override

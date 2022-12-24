@@ -10,7 +10,7 @@ public class Parametres {
     public Parametres() {
         this.text = "";
         this.speed = 1;
-        this.bonusFreq = 0;
+        this.bonusFreq = 75;
     }
     
     public String getText() {

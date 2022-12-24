@@ -14,6 +14,10 @@ public class Player {
         hp -= dmg;
     }
 
+    public void heal(int h) {
+        hp += h;
+    }
+
     public String getName() {
         return name;
     }
