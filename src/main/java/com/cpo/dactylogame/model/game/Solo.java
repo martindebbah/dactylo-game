@@ -33,6 +33,12 @@ public class Solo extends Game {
     }
 
     @Override
+    public void gameOver() {
+        timerAdd.stop();
+        super.gameOver();
+    }
+
+    @Override
     public void initGame() {
         this.wordsPos = new int[15][2];
         this.timerAdd = new Timer(delay(), e -> {add();});
@@ -82,15 +88,16 @@ public class Solo extends Game {
 
         // On récupère le nombre d'erreurs
         int nError = listener.getCptError();
-        if (nError == 0) // Pas d'erreur
+        if (nError == 0) { // Pas d'erreur
             nWritten++; // On incrémente le nombre de mots écrits sans erreur
 
-        if (nWritten % 100 == 0) { // Tous les 100 mots sans erreur
-            level++; // On monte d'un niveau
-            timerAdd.setDelay(delay()); // Et on change la vitesse du jeu
+            if (nWritten % 100 == 0) { // Tous les 100 mots sans erreur
+                level++; // On monte d'un niveau
+                timerAdd.setDelay(delay()); // Et on change la vitesse du jeu
+            }
+        }else {
+            player.loseHp(nError); // Le joueur perd des pdv
         }
-
-        player.loseHp(nError); // Le joueur perd des pdv
     }
 
     private int delay() {
@@ -130,6 +137,18 @@ public class Solo extends Game {
 
     public int getY(int index) {
         return wordsPos[index][1];
+    }
+
+    public int getHp() {
+        return player.getHp();
+    }
+
+    public int getNbWords() {
+        return nWritten;
+    }
+
+    public int getLevel() {
+        return level;
     }
 
      @Override

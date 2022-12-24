@@ -42,6 +42,7 @@ public abstract class Game implements ActionListener {
      */
     public void gameOver() {
         timer.stop();
+        window.gameOver();
     }
 
     @Override

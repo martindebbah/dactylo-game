@@ -70,5 +70,10 @@ public class Window extends JFrame {
     public GameView getGameView() {
         return gameView;
     }
+
+    public void gameOver() {
+        gameView.gameOver();
+        refresh();
+    }
     
 }
