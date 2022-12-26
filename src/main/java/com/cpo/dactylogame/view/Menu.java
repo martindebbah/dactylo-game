@@ -86,21 +86,6 @@ public class Menu extends JPanel{
         textPanel.add(textLabel, panelGbc);
         textPanel.add(textButtons, panelGbc);
 
-        // Choix de la vitesse de jeu
-        JPanel speedPanel = new JPanel(new GridBagLayout());
-        speedPanel.setOpaque(false);
-
-        JLabel speedLabel = new JLabel("Vitesse du jeu");
-        JPanel speedButtons = new JPanel(new GridBagLayout());
-        speedButtons.setOpaque(false);
-
-        createParamButton("Lent", e -> {param.setSpeed(0.5);}, speedButtons, buttonsGbc);
-        createParamButton("Moyen", e -> {param.setSpeed(1);}, speedButtons, buttonsGbc);
-        createParamButton("Rapide", e -> {param.setSpeed(2);}, speedButtons, buttonsGbc);
-
-        speedPanel.add(speedLabel, panelGbc);
-        speedPanel.add(speedButtons, panelGbc);
-
         // Choix de la fréquence de bonus
         JPanel bonusPanel = new JPanel(new GridBagLayout());
         bonusPanel.setOpaque(false);
@@ -133,7 +118,6 @@ public class Menu extends JPanel{
 
         // Ajout des composants
         add(textPanel, gbc);
-        add(speedPanel, gbc);
         add(bonusPanel, gbc);
         add(malusPanel, gbc);
         createButton("Jouer avec ces paramètres", e -> {choiceGame();});

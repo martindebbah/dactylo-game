@@ -8,28 +8,23 @@ import com.cpo.dactylogame.model.text.Text;
 
 public class Listener extends KeyAdapter {
 
-    Optional<Stat> stat;
-    private Text text; // différent en fonction du mode de jeu
-    private String currentWord = "";
-    private int index = 0;
-    private int[] goodOrBadChar;
-    private int cptError = 0;
-    private int hpToHeal = 0;
-    private boolean firstTry = true;
-    private String errorWord = "";
-    //private LinkedList<String> errorWord = new LinkedList<String>();
+    Optional<Stat> stat; // Pour calculer les statistiques
+    private Text text; // Le texte à écrire
+    private String currentWord = ""; // Le mot en cours d'écriture
+    private int index = 0; // L'index du prochain caractère à taper
+    private int[] goodOrBadChar; // Le tableau représenant les caractères bien ou mal tapés
+    private int cptError = 0; // Le nombre d'erreurs
+    private int hpToHeal = 0; // Le nombre de points de vie à soigner (mode jeu)
+    private boolean firstTry = true; // Si le mot a été tapé du premier coup (pour soigner en mode jeu)
+    private String errorWord = ""; // Pour permettre de taper des erreurs si on appuie pas sur espace et qu'on dépasse
+                                // la longueur du mot courant
 
-    private boolean next = false;
+    private boolean next = false; // Si on passe au prochain mot
 
     public Listener(Text text) {
         this.stat = Optional.empty();
         this.text = text;
     }
-
-    // Si char == " " -> validation du mot
-    // Créer une fonction validateWord() pour forcer la validation du mot courant
-    // " " -> validateWord()
-    // Et en mode jeu, ajouter un mot à la file pleine appellera aussi cette fonction
     @Override
     public void keyPressed(KeyEvent key) {
         if (currentWord.equals(""))
@@ -66,11 +61,6 @@ public class Listener extends KeyAdapter {
         }
 
         add(time); // Pour tout char != del
-        //System.out.println("index: " + index);
-        /*
-         * ajouter une condition pour espace -> valider le mot
-         * et pour backspace -> supprimer le dernier char + index--
-         */
     }
 
     public void initGame(){
@@ -95,9 +85,6 @@ public class Listener extends KeyAdapter {
         calcError();
         if (text.getWords().size() != 0)
             refreshWord();
-
-        System.out.println("refresh");
-        // mettre à jour le nombre d'erreur dans le mot
     }
 
     /**
@@ -159,10 +146,10 @@ public class Listener extends KeyAdapter {
     }
 
     public int getHpToHeal() {
-        int x = hpToHeal;
+        int toHeal = firstTry ? hpToHeal : 0;
         hpToHeal = 0;
         firstTry = true;
-        return x;
+        return toHeal;
     }
 
     public String getErrorWord() {

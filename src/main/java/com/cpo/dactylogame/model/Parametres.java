@@ -3,14 +3,12 @@ package com.cpo.dactylogame.model;
 public class Parametres {
 
     private String text;
-    private double speed;
-    private int bonusFreq;
-    private int malusFreq;
+    private int bonusFreq; // Pourcentage d'apparition
+    private int malusFreq; // Pourcentage d'apparition
     
     public Parametres() {
         this.text = "";
-        this.speed = 1;
-        this.bonusFreq = 75;
+        this.bonusFreq = 25;
     }
     
     public String getText() {
@@ -19,14 +17,6 @@ public class Parametres {
     
     public void setText(String text) {
         this.text = text;
-    }
-    
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
     }
     
     public int getBonusFreq() {

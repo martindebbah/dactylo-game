@@ -180,8 +180,6 @@ public abstract class GameView extends JPanel {
                 if (((Solo) game).isBonus(i))
                     g.drawLine(game.getX(i) - 5, game.getY(i) + 10, x, game.getY(i) + 10);
             }
-            // g.drawRect(150, 500, 10, 10);
-            // g.drawRect(850, 500, 10, 10);
 
             g.setColor(Color.YELLOW);
             drawWord(g, "Points de vie restants : " + ((Solo) game).getHp() + " | Niveau " + ((Solo) game).getLevel(),
@@ -196,8 +194,8 @@ public abstract class GameView extends JPanel {
             g.setFont(g.getFont().deriveFont(25f));
             g.setColor(Color.YELLOW);
             
-            drawWord(g, "Vous avez atteint le niveau " + level, 150, 150, false);
-            drawWord(g, "Vous avez écrit " + nWritten + " mots correctement", 170, 170, false);
+            drawWord(g, "Vous avez atteint le niveau " + level, 200, 200, false);
+            drawWord(g, "Vous avez écrit " + nWritten + " mots correctement", 150, 275, false);
         }
 
     }
