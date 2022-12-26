@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.cpo.dactylogame.model.GameState;
+import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.game.Game;
 import com.cpo.dactylogame.model.game.Normal;
 import com.cpo.dactylogame.model.game.Solo;
@@ -35,13 +36,21 @@ public class Window extends JFrame {
     }
 
     public void setGame(GameState gameState){
+        Parametres p = new Parametres();
+        if (gameState == GameState.NORMAL)
+            p.setText("lotr"); // Si pas de texte choisi, lotr comme texte de base en mode normal
+            
+        setGame(gameState, p);
+    }
+
+    public void setGame(GameState gameState, Parametres param) {
         switch (gameState) {
             case NORMAL:
-                game = new Normal(this, "lotr");
+                game = new Normal(this, param);
                 gameView = new GameView.NormalView(game);
                 break;
             case JEU:
-                game = new Solo(this);
+                game = new Solo(this, param);
                 gameView = new GameView.SoloView(game);
                 break;
             default:

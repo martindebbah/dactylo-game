@@ -1,5 +1,6 @@
 package com.cpo.dactylogame.model.text;
 
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 public class RandomWords extends WordIterator {
@@ -63,6 +64,28 @@ public class RandomWords extends WordIterator {
     "omnibus", "minime", "alias", "eligendi", "adultae", "caenos", "fultum", "infudere", "auctorem", "necesse",
     "invehi", "parturiat", "insuperabilis", "commodissimum", "spem", "merces", "latebrosis", "longos", "sentirent", "locum",};
     private Random random = new Random();
+
+    public RandomWords() {
+        // Ne fait rien
+    }
+
+    public RandomWords(String path) {
+        try{
+            int length = 0;
+            Reader r = new Reader(path);
+            while (r.hasNext()) {
+                length++;
+                r.next();
+            }
+            this.words = new String[length];
+            r = new Reader(path);
+            for (int i = 0; r.hasNext(); i++) {
+                words[i] = r.next();
+            }
+        }catch (FileNotFoundException e) {
+            // Ne fait rien
+        }
+    }
 
     @Override
     public boolean hasNext() {

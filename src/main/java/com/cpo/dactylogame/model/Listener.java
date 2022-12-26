@@ -25,6 +25,7 @@ public class Listener extends KeyAdapter {
         this.stat = Optional.empty();
         this.text = text;
     }
+    
     @Override
     public void keyPressed(KeyEvent key) {
         if (currentWord.equals(""))

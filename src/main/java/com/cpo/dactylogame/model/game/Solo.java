@@ -4,10 +4,8 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
-import com.cpo.dactylogame.model.Listener;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.Player;
-import com.cpo.dactylogame.model.text.Text;
 import com.cpo.dactylogame.view.Window;
 
 public class Solo extends Game {
@@ -19,16 +17,9 @@ public class Solo extends Game {
     private int nWritten;
     private Timer timerAdd;
 
-    private int t = 0;
-
-    public Solo(Window window) {
-        super(window, new Listener(new Text("")));
+    public Solo(Window window, Parametres param) {
+        super(window, param);
         this.player = new Player("");
-    }
-
-    public Solo(Window window, Parametres parametres) {
-        super(window, new Listener(new Text(parametres.getText())));
-        this.param = parametres;
     }
 
     @Override

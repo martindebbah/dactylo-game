@@ -2,25 +2,18 @@ package com.cpo.dactylogame.model.game;
 
 import java.util.Optional;
 
-import com.cpo.dactylogame.model.Listener;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.Stat;
-import com.cpo.dactylogame.model.text.Text;
 import com.cpo.dactylogame.view.Window;
 
 public class Normal extends Game{
 
     private Stat stat;
 
-    public Normal(Window window, String path) {
-        super(window, new Listener(new Text(path)));
+    public Normal(Window window, Parametres param) {
+        super(window, param);
         this.stat = new Stat();
         listener.setStat(Optional.of(stat));
-    }
-
-    public Normal(Window window, Parametres parametres) {
-        super(window, new Listener(new Text(parametres.getText())));
-        this.param = parametres;
     }
     
     @Override

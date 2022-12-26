@@ -94,9 +94,9 @@ public class Menu extends JPanel{
         JPanel bonusButtons = new JPanel(new GridBagLayout());
         bonusButtons.setOpaque(false);
 
-        createParamButton("Rare", e -> {param.setBonusFreq(0);}, bonusButtons, buttonsGbc);
-        createParamButton("Courant", e -> {param.setBonusFreq(0);}, bonusButtons, buttonsGbc);
-        createParamButton("Abondant", e -> {param.setBonusFreq(0);}, bonusButtons, buttonsGbc);
+        createParamButton("Rare", e -> {param.setBonusFreq(10);}, bonusButtons, buttonsGbc);
+        createParamButton("Courant", e -> {param.setBonusFreq(25);}, bonusButtons, buttonsGbc);
+        createParamButton("Abondant", e -> {param.setBonusFreq(50);}, bonusButtons, buttonsGbc);
 
         bonusPanel.add(bonusLabel, panelGbc);
         bonusPanel.add(bonusButtons, panelGbc);
@@ -109,18 +109,32 @@ public class Menu extends JPanel{
         JPanel malusButtons = new JPanel(new GridBagLayout());
         malusButtons.setOpaque(false);
 
-        createParamButton("Rare", e -> {param.setMalusFreq(0);}, malusButtons, buttonsGbc);
-        createParamButton("Courant", e -> {param.setMalusFreq(0);}, malusButtons, buttonsGbc);
-        createParamButton("Abondant", e -> {param.setMalusFreq(0);}, malusButtons, buttonsGbc);
+        createParamButton("Rare", e -> {param.setMalusFreq(10);}, malusButtons, buttonsGbc);
+        createParamButton("Courant", e -> {param.setMalusFreq(25);}, malusButtons, buttonsGbc);
+        createParamButton("Abondant", e -> {param.setMalusFreq(50);}, malusButtons, buttonsGbc);
 
         malusPanel.add(malusLabel, panelGbc);
         malusPanel.add(malusButtons, panelGbc);
+
+        // Boutons pour jouer
+        JPanel buttonsPanel = new JPanel(new GridBagLayout());
+        buttonsPanel.setOpaque(false);
+
+        JLabel buttonsLabel = new JLabel("Jouer avec ces paramètres");
+        JPanel buttons = new JPanel(new GridBagLayout());
+        buttons.setOpaque(false);
+
+        createParamButton("Mode normal", e -> {window.setGame(GameState.NORMAL, param);}, buttons, buttonsGbc);
+        createParamButton("Mode jeu", e -> {window.setGame(GameState.JEU, param);}, buttons, buttonsGbc);
+
+        buttonsPanel.add(buttonsLabel, panelGbc);
+        buttonsPanel.add(buttons, panelGbc);
 
         // Ajout des composants
         add(textPanel, gbc);
         add(bonusPanel, gbc);
         add(malusPanel, gbc);
-        createButton("Jouer avec ces paramètres", e -> {choiceGame();});
+        add(buttonsPanel, gbc);
         createButton("Retour", e -> {setMainMenu();});
 
         window.refresh();

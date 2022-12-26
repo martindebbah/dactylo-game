@@ -9,6 +9,7 @@ public class Parametres {
     public Parametres() {
         this.text = "";
         this.bonusFreq = 25;
+        this.malusFreq = 25;
     }
     
     public String getText() {
