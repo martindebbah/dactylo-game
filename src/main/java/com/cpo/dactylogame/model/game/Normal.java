@@ -48,6 +48,10 @@ public class Normal extends Game{
         return 0;
     }
 
+    public Stat getStat() {
+        return stat;
+    }
+
     @Override
     public void updateWords() {
         listener.getText().addWord();

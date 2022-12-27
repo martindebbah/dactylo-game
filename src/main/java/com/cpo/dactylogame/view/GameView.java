@@ -6,9 +6,10 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
-import com.cpo.dactylogame.model.game.Game;
-import com.cpo.dactylogame.model.game.Solo;
+import com.cpo.dactylogame.model.Stat;
+import com.cpo.dactylogame.model.game.*;
 import com.cpo.dactylogame.model.text.Text;
 
 public abstract class GameView extends JPanel {
@@ -70,6 +71,7 @@ public abstract class GameView extends JPanel {
      * @return La coordonnée x de la fin du mot
      */
     public int drawWord(Graphics g, String word, int x, int y, boolean current) {
+        Color defaultColor = g.getColor();
         char[] c = word.toCharArray();
         for (int i = 0; i < c.length; i++) {
             if (current) {
@@ -81,7 +83,7 @@ public abstract class GameView extends JPanel {
                         g.setColor(Color.GREEN);
                         break;
                     default:
-                        g.setColor(Color.YELLOW);
+                        g.setColor(defaultColor);
                 }
             }
 
@@ -154,7 +156,20 @@ public abstract class GameView extends JPanel {
 
         @Override
         public void drawGameOver(Graphics g) {
-            drawWord(g, "Partie finie", 500, 500, false);
+            g.setFont(g.getFont().deriveFont(25f));
+            g.setColor(Color.YELLOW);
+            drawWord(g, "Partie terminée", (game.getWindow().getWidth() - 15 * 20) / 2, 100, false);
+
+            DecimalFormat df = new DecimalFormat("0.00");
+
+            Stat stat = ((Normal) game).getStat();
+            String vit = "Nombre de mots par minutes : " + df.format(stat.getVit());
+            String prec = "Précision : " + df.format(stat.getPrec()) + "%";
+            String reg = "Régularité : " + df.format(stat.getReg());
+
+            drawWord(g, vit, (game.getWindow().getWidth() - vit.length() * 20) / 2, 200, false);
+            drawWord(g, prec, (game.getWindow().getWidth() - prec.length() * 20) / 2, 250, false);
+            drawWord(g, reg, (game.getWindow().getWidth() - reg.length() * 20) / 2, 300, false);
         }
         
     }
@@ -172,30 +187,31 @@ public abstract class GameView extends JPanel {
             Text t = game.getListener().getText();
             for (int i = 0; i < t.getNbWords(); i++) {
                 g.setColor(Color.YELLOW);
+                if (((Solo) game).isBonus(i))
+                    g.setColor(new Color(14, 204, 216));
+                if (((Solo) game).isMalus(i))
+                    g.setColor(new Color(234, 130, 5));
                 int x = drawWord(g, t.get(i), game.getX(i), game.getY(i), i == 0);
                 if (i == 0)
                     g.drawRect(game.getX(i) - 5, game.getY(i) - 25, x - game.getX(i) + 5, 35);
-
-                g.setColor(new Color(14, 204, 216));
-                if (((Solo) game).isBonus(i))
-                    g.drawLine(game.getX(i) - 5, game.getY(i) + 10, x, game.getY(i) + 10);
             }
 
             g.setColor(Color.YELLOW);
-            drawWord(g, "Points de vie restants : " + ((Solo) game).getHp() + " | Niveau " + ((Solo) game).getLevel(),
+            drawWord(g, "Points de vie restants : " + ((Solo) game).getHp() + " | Niveau " + ((Solo) game).getLevel() +
+            "(" + (100 - ((Solo) game).getNbWords() % 100) + ")",
             100, 650, false);
         }
 
         @Override
         public void drawGameOver(Graphics g) {
-            int nWritten = ((Solo) game).getNbWords();
-            int level = ((Solo) game).getLevel();
+            String level = "Vous avez atteint le niveau " + ((Solo) game).getLevel();
+            String nWritten = "Vous avez écrit " + ((Solo) game).getNbWords() + " mots correctement";
 
             g.setFont(g.getFont().deriveFont(25f));
             g.setColor(Color.YELLOW);
             
-            drawWord(g, "Vous avez atteint le niveau " + level, 200, 200, false);
-            drawWord(g, "Vous avez écrit " + nWritten + " mots correctement", 150, 275, false);
+            drawWord(g, level, (game.getWindow().getWidth() - level.length() * 20) / 2, 200, false);
+            drawWord(g, nWritten, (game.getWindow().getWidth() - nWritten.length() * 20) / 2, 275, false);
         }
 
     }

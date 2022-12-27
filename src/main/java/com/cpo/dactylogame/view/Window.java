@@ -22,6 +22,7 @@ public class Window extends JFrame {
         setTitle("Dactylo-game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
+        setResizable(false);
 
         setLocationRelativeTo(null);
         setVisible(true);
@@ -87,6 +88,14 @@ public class Window extends JFrame {
 
     public void quit() {
         System.exit(0);
+    }
+
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    public int getHeight() {
+        return HEIGHT;
     }
     
 }

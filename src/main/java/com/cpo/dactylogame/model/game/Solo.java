@@ -13,6 +13,7 @@ public class Solo extends Game {
     private Player player;
     private int[][] wordsPos; // [n][pos] -> pour le n-ième mot du texte pos = [x][y]
     private int[] bonus;
+    private final int NWORDS = 15;
     private int level;
     private int nWritten;
     private Timer timerAdd;
@@ -35,12 +36,12 @@ public class Solo extends Game {
 
     @Override
     public void initGame() {
-        this.wordsPos = new int[16][2]; // Taille du buffer + 1, car lors de l'ajout d'un mot dans une file pleine,
-        this.bonus = new int[16];       // on fait la modification du tableau après l'initialisation des positions.
+        this.wordsPos = new int[NWORDS + 1][2]; // Taille du buffer + 1, car lors de l'ajout d'un mot dans une file pleine,
+        this.bonus = new int[NWORDS + 1];       // on fait la modification du tableau après l'initialisation des positions.
 
         level = 1; // Début du jeu au niveau 1
-        this.timerAdd = new Timer(delay(), e -> {add();}); // Un timer qui ajoute un mot à la file toutes les x secondes
-        add(); // Ajout du premier mot
+        this.timerAdd = new Timer(delay(), e -> {add("");}); // Un timer qui ajoute un mot à la file toutes les x secondes
+        add(""); // Ajout du premier mot
 
         listener.initGame();
         timerAdd.start(); // Lancement du jeu
@@ -70,23 +71,26 @@ public class Solo extends Game {
 
     @Override
     public void updateWords() {
+        int bonusVal = bonus[0];
+        String word = listener.getLastWord();
+        
         // On change toutes les positions pour qu'elles soient au même index que les mots
-        for (int i = 0; i < wordsPos.length - 1; i++) {
+        for (int i = 0; i < NWORDS; i++) {
             wordsPos[i][0] = wordsPos[i + 1][0];
             wordsPos[i][1] = wordsPos[i + 1][1];
+            bonus[i] = bonus[i + 1]; // On met à jour le tableau de bonus
         }
-
-        int hpToHeal = listener.getHpToHeal();
-
+        
         // Si le buffer est rempli à moins de 50%, on ajoute un mot
         if (listener.getText().getNbWords() < listener.getText().getBufferSize() / 2)
-            add();
-
+        add("");
+        
         // On change le mot courant
         listener.refreshWord();
-
-        // On récupère le nombre d'erreurs
+        
+        // On récupère le nombre d'erreurs et le nombre de pv à soigner
         int nError = listener.getCptError();
+        int hpToHeal = listener.getHpToHeal();
         if (nError == 0) { // Pas d'erreur
             nWritten++; // On incrémente le nombre de mots écrits sans erreur
 
@@ -95,15 +99,16 @@ public class Solo extends Game {
                 timerAdd.setDelay(delay()); // Et on change la vitesse du jeu
             }
 
-            if (bonus[0] == 1) // Le mot qu'on vient d'écrire est un mot bonus
+            if (bonusVal == 1) // Le mot qu'on vient d'écrire est un mot bonus
                 player.heal(hpToHeal);
+
+            // if (bonusVal == -1) // Le mot qu'on vient d'écrire est un mot malus
+            //     add(word);
+            /* Mode multi -> envoyer ce add à tous les joueurs */
 
         }else {
             player.loseHp(nError); // Le joueur perd des pdv
         }
-
-        for (int i = 0; i < bonus.length - 1; i++) // On met à jour le tableau de bonus
-            bonus[i] = bonus[i + 1];
     }
 
     private int delay() {
@@ -117,20 +122,33 @@ public class Solo extends Game {
     /**
      * Ajoute un mot avec de nouvelles positions
      */
-    private void add() {
+    private void add(String word) {
         if (listener.getText().isFull())
             listener.refresh(); // Force la validation du mot en cours si la file est pleine
 
         if (listener.nextWord())
             updateWords();
 
-        listener.getText().addWord();
+        switch (word) {
+            case "":
+                listener.getText().addWord();
+                break;
+            default: listener.getText().addWord(word);
+        }
+
         int i = listener.getText().getNbWords() - 1; // La position dans la liste du mot ajouté
 
         // Fréquence de bonus
-        double freq = param.getBonusFreq();
-        if (new Random().nextInt(100) < freq)
+        double bonusFreq = param.getBonusFreq();
+        if (new Random().nextInt(100) < bonusFreq)
             bonus[i] = 1;
+
+        // double malusFreq = param.getMalusFreq();
+        // if (new Random().nextInt(100) < malusFreq && bonus[i] == 0)
+        //     bonus[i] = -1;
+        /* Définir comment choisir entre bonus et malus si le mot veut être les deux
+         * Ne faire cette dernière que lors du multi
+         */
 
         int wordLength = (listener.getText().get(i).length()) * 25;
         // Taille du mot en pixels
@@ -170,6 +188,10 @@ public class Solo extends Game {
 
     public boolean isBonus(int index) {
         return bonus[index] == 1;
+    }
+
+    public boolean isMalus(int index) {
+        return bonus[index] == -1;
     }
 
     @Override
