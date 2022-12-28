@@ -76,7 +76,7 @@ public class StatTest {
         }
         stat.validate(true);
         stat.calcReg();
-        assertEquals(1_000, stat.getReg());
+        assertEquals(1, stat.getReg());
 
         for (int i = 0; i < 3; i++) {
             stat.add(currentTime);
@@ -84,7 +84,7 @@ public class StatTest {
         }
         stat.validate(true);
         stat.calcReg();
-        assertEquals(((5. * 1_000) + (2. * 2_000)) / 7, stat.getReg());
+        assertEquals(((5. * 1_000) + (2. * 2_000)) / 7 / 1_000, stat.getReg());
 
         for (int i = 0; i < 3; i++) {
             stat.add(currentTime);
@@ -95,7 +95,7 @@ public class StatTest {
         stat.add(currentTime);
         stat.validate(true);
         stat.calcReg();
-        assertEquals(((7. * 1_000) + (4. * 2_000)) / 10, stat.getReg());
+        assertEquals(((7. * 1_000) + (4. * 2_000)) / 10 / 1_000, stat.getReg());
 
         currentTime += time;
         for (int i = 0; i < 5; i++) {
@@ -104,7 +104,7 @@ public class StatTest {
         }
         stat.validate(false);
         stat.calcReg();
-        assertEquals(((7. * 1_000) + (4. * 2_000)) / 10, stat.getReg());
+        assertEquals(((7. * 1_000) + (4. * 2_000)) / 10 / 1_000, stat.getReg());
     }
     
 }

@@ -58,7 +58,7 @@ public class Stat {
      * Calcule la régularité
      */
     public void calcReg() { // Pas sûr
-        reg = tmpTot / (nChar - 1);
+        reg = tmpTot / (nChar - 1) / 1000;
     }
 
     /**
@@ -70,6 +70,7 @@ public class Stat {
         tmpTyped++;
 
         // Régularité
+        time = time - startTime;
         tmpReg += time - lastTime;
         lastTime = time;
     }
