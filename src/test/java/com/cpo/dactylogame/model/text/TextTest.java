@@ -9,7 +9,7 @@ public class TextTest {
 
     @BeforeEach
     public void initText() {
-        this.text = new Text("test");
+        this.text = new Text("test", true);
     }
 
     @AfterEach

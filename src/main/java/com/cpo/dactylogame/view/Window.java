@@ -7,7 +7,7 @@ import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.game.Game;
 import com.cpo.dactylogame.model.game.Normal;
-import com.cpo.dactylogame.model.game.Solo;
+import com.cpo.dactylogame.model.game.Jeu;
 
 public class Window extends JFrame {
 
@@ -45,21 +45,16 @@ public class Window extends JFrame {
     }
 
     public void setGame(GameState gameState, Parametres param) {
-        switch (gameState) {
-            case NORMAL:
-                game = new Normal(this, param);
-                gameView = new GameView.NormalView(game);
-                break;
-            case JEU:
-                game = new Solo(this, param);
-                gameView = new GameView.SoloView(game);
-                break;
-            default:
-                break;
-            }
-            addPanel(gameView);
-            addKeyListener(game.getListener());
-            refresh();
+        if (gameState == GameState.NORMAL) {
+            game = new Normal(this, param);
+            gameView = new GameView.NormalView(game);
+        } else {
+            game = new Jeu(this, param, gameState);
+            gameView = new GameView.JeuView(game);
+        }
+        addPanel(gameView);
+        addKeyListener(game.getListener());
+        refresh();
     }
 
     private void addPanel(JPanel panel) {

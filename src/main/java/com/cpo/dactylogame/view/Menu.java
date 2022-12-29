@@ -80,8 +80,8 @@ public class Menu extends JPanel{
         JPanel textButtons = new JPanel(new GridBagLayout());
         textButtons.setOpaque(false);
 
-        createParamButton("Aléatoire", e -> {param.setText("");}, textButtons, buttonsGbc);
-        createParamButton("Le Seigneur des Anneaux", e -> {param.setText("lotr");}, textButtons, buttonsGbc);
+        createParamButton("Aléatoire", e -> {param.setText("");}, textButtons, buttonsGbc, true);
+        createParamButton("Le Seigneur des Anneaux", e -> {param.setText("lotr");}, textButtons, buttonsGbc, false);
 
         textPanel.add(textLabel, panelGbc);
         textPanel.add(textButtons, panelGbc);
@@ -94,9 +94,9 @@ public class Menu extends JPanel{
         JPanel bonusButtons = new JPanel(new GridBagLayout());
         bonusButtons.setOpaque(false);
 
-        createParamButton("Rare", e -> {param.setBonusFreq(10);}, bonusButtons, buttonsGbc);
-        createParamButton("Courant", e -> {param.setBonusFreq(25);}, bonusButtons, buttonsGbc);
-        createParamButton("Abondant", e -> {param.setBonusFreq(50);}, bonusButtons, buttonsGbc);
+        createParamButton("Rare", e -> {param.setBonusFreq('r');}, bonusButtons, buttonsGbc, true);
+        createParamButton("Courant", e -> {param.setBonusFreq('c');}, bonusButtons, buttonsGbc, false);
+        createParamButton("Abondant", e -> {param.setBonusFreq('a');}, bonusButtons, buttonsGbc, false);
 
         bonusPanel.add(bonusLabel, panelGbc);
         bonusPanel.add(bonusButtons, panelGbc);
@@ -109,9 +109,9 @@ public class Menu extends JPanel{
         JPanel malusButtons = new JPanel(new GridBagLayout());
         malusButtons.setOpaque(false);
 
-        createParamButton("Rare", e -> {param.setMalusFreq(10);}, malusButtons, buttonsGbc);
-        createParamButton("Courant", e -> {param.setMalusFreq(25);}, malusButtons, buttonsGbc);
-        createParamButton("Abondant", e -> {param.setMalusFreq(50);}, malusButtons, buttonsGbc);
+        createParamButton("Rare", e -> {param.setMalusFreq('r');}, malusButtons, buttonsGbc, true);
+        createParamButton("Courant", e -> {param.setMalusFreq('c');}, malusButtons, buttonsGbc, false);
+        createParamButton("Abondant", e -> {param.setMalusFreq('a');}, malusButtons, buttonsGbc, false);
 
         malusPanel.add(malusLabel, panelGbc);
         malusPanel.add(malusButtons, panelGbc);
@@ -124,8 +124,8 @@ public class Menu extends JPanel{
         JPanel buttons = new JPanel(new GridBagLayout());
         buttons.setOpaque(false);
 
-        createParamButton("Mode normal", e -> {window.setGame(GameState.NORMAL, param);}, buttons, buttonsGbc);
-        createParamButton("Mode jeu", e -> {window.setGame(GameState.JEU, param);}, buttons, buttonsGbc);
+        createParamButton("Mode normal", e -> {window.setGame(GameState.NORMAL, param);}, buttons, buttonsGbc, false);
+        createParamButton("Mode jeu", e -> {window.setGame(GameState.JEU, param);}, buttons, buttonsGbc, false);
 
         buttonsPanel.add(buttonsLabel, panelGbc);
         buttonsPanel.add(buttons, panelGbc);
@@ -140,9 +140,19 @@ public class Menu extends JPanel{
         window.refresh();
     }
 
-    public void createParamButton(String name, ActionListener l, JComponent c, GridBagConstraints g) {
+    public void createParamButton(String name, ActionListener l, JComponent c, GridBagConstraints g, boolean selected) {
         JButton button = new JButton(name);
-        button.addActionListener(l);
+        button.setOpaque(false);
+        Color selectedColor = new Color(27, 180, 146);
+        if (selected)
+            button.setForeground(selectedColor);
+
+        button.addActionListener(e -> {
+            for (Component b : c.getComponents())
+                b.setForeground(Color.BLACK);
+            l.actionPerformed(e);
+            button.setForeground(selectedColor);
+        });
         c.add(button, g);
     }
     

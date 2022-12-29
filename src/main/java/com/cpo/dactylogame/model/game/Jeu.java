@@ -4,11 +4,12 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
+import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.Player;
 import com.cpo.dactylogame.view.Window;
 
-public class Solo extends Game {
+public class Jeu extends Game {
 
     private Player player;
     private int[][] wordsPos; // [n][pos] -> pour le n-ième mot du texte pos = [x][y]
@@ -18,8 +19,8 @@ public class Solo extends Game {
     private int nWritten;
     private Timer timerAdd;
 
-    public Solo(Window window, Parametres param) {
-        super(window, param);
+    public Jeu(Window window, Parametres param, GameState state) {
+        super(window, param, state);
         this.player = new Player("");
     }
 
@@ -101,9 +102,11 @@ public class Solo extends Game {
 
             if (bonusVal == 1) // Le mot qu'on vient d'écrire est un mot bonus
                 player.heal(hpToHeal);
+            if (player.getHp() > 100) // Le joueur ne peut pas avoir plus de 100 pv
+                player.loseHp(player.getHp() - 100);
 
-            // if (bonusVal == -1) // Le mot qu'on vient d'écrire est un mot malus
-            //     add(word);
+            if (state == GameState.MULTIJOUEUR && bonusVal == -1) // Le mot qu'on vient d'écrire est un mot malus
+                add(word);
             /* Mode multi -> envoyer ce add à tous les joueurs */
 
         }else {
@@ -143,9 +146,9 @@ public class Solo extends Game {
         if (new Random().nextInt(100) < bonusFreq)
             bonus[i] = 1;
 
-        // double malusFreq = param.getMalusFreq();
-        // if (new Random().nextInt(100) < malusFreq && bonus[i] == 0)
-        //     bonus[i] = -1;
+        double malusFreq = param.getMalusFreq();
+        if (state == GameState.MULTIJOUEUR && new Random().nextInt(100) < malusFreq && bonus[i] == 0)
+            bonus[i] = -1;
         /* Définir comment choisir entre bonus et malus si le mot veut être les deux
          * Ne faire cette dernière que lors du multi
          */

@@ -1,7 +1,9 @@
 package com.cpo.dactylogame.model.text;
 
 import java.io.FileNotFoundException;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class RandomWords extends WordIterator {
 
@@ -69,21 +71,19 @@ public class RandomWords extends WordIterator {
         // Ne fait rien
     }
 
-    public RandomWords(String path) {
+    public RandomWords(String text) {
+        if (text.equals(""))
+            return;
         try{
-            int length = 0;
-            Reader r = new Reader(path);
+            HashSet<String> s = new HashSet<>();
+            Reader r = new Reader(text);
             while (r.hasNext()) {
-                length++;
-                r.next();
+                s.add(r.next());
             }
-            this.words = new String[length];
-            r = new Reader(path);
-            for (int i = 0; r.hasNext(); i++) {
-                words[i] = r.next();
-            }
+            words = new String[0];
+            this.words = s.toArray(words);
         }catch (FileNotFoundException e) {
-            // Ne fait rien
+            e.printStackTrace();
         }
     }
 

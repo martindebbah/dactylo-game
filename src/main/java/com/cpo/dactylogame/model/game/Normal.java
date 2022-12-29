@@ -2,6 +2,7 @@ package com.cpo.dactylogame.model.game;
 
 import java.util.Optional;
 
+import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.Stat;
 import com.cpo.dactylogame.view.Window;
@@ -11,7 +12,7 @@ public class Normal extends Game{
     private Stat stat;
 
     public Normal(Window window, Parametres param) {
-        super(window, param);
+        super(window, param, GameState.NORMAL);
         this.stat = new Stat();
         listener.setStat(Optional.of(stat));
     }

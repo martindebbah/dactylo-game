@@ -174,9 +174,9 @@ public abstract class GameView extends JPanel {
         
     }
 
-    static class SoloView extends GameView {
+    static class JeuView extends GameView {
 
-        public SoloView(Game game) {
+        public JeuView(Game game) {
             super(game);
         }
 
@@ -187,9 +187,9 @@ public abstract class GameView extends JPanel {
             Text t = game.getListener().getText();
             for (int i = 0; i < t.getNbWords(); i++) {
                 g.setColor(Color.YELLOW);
-                if (((Solo) game).isBonus(i))
+                if (((Jeu) game).isBonus(i))
                     g.setColor(new Color(14, 204, 216));
-                if (((Solo) game).isMalus(i))
+                if (((Jeu) game).isMalus(i))
                     g.setColor(new Color(234, 130, 5));
                 int x = drawWord(g, t.get(i), game.getX(i), game.getY(i), i == 0);
                 if (i == 0)
@@ -197,15 +197,15 @@ public abstract class GameView extends JPanel {
             }
 
             g.setColor(Color.YELLOW);
-            drawWord(g, "Points de vie restants : " + ((Solo) game).getHp() + " | Niveau " + ((Solo) game).getLevel() +
-            "(" + (100 - ((Solo) game).getNbWords() % 100) + ")",
+            drawWord(g, "Points de vie restants : " + ((Jeu) game).getHp() + " | Niveau " + ((Jeu) game).getLevel() +
+            "(" + (100 - ((Jeu) game).getNbWords() % 100) + ")",
             100, 650, false);
         }
 
         @Override
         public void drawGameOver(Graphics g) {
-            String level = "Vous avez atteint le niveau " + ((Solo) game).getLevel();
-            String nWritten = "Vous avez écrit " + ((Solo) game).getNbWords() + " mots correctement";
+            String level = "Vous avez atteint le niveau " + ((Jeu) game).getLevel();
+            String nWritten = "Vous avez écrit " + ((Jeu) game).getNbWords() + " mots correctement";
 
             g.setFont(g.getFont().deriveFont(25f));
             g.setColor(Color.YELLOW);

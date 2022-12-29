@@ -11,10 +11,12 @@ public class Reader extends WordIterator {
 
     /**
      * Un objet permettant de lire un fichier texte mot par mot
-     * @param pathname Le fichier texte à lire
+     * @param text Le fichier texte à lire
      */
-    public Reader(String pathname) throws FileNotFoundException {
-        this.file = new File(pathname);
+    public Reader(String text) throws FileNotFoundException {
+        if (text.equals(""))
+            text = "lotr";
+        this.file = new File("resources/textes/" + text + ".txt");
         this.sc = new Scanner(file);
         sc.useDelimiter(" |\n");
     }

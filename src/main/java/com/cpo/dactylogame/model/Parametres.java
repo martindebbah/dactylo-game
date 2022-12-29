@@ -8,8 +8,8 @@ public class Parametres {
     
     public Parametres() {
         this.text = "";
-        this.bonusFreq = 25;
-        this.malusFreq = 25;
+        setBonusFreq('r');
+        setMalusFreq('r');
     }
     
     public String getText() {
@@ -24,16 +24,36 @@ public class Parametres {
         return bonusFreq;
     }
 
-    public void setBonusFreq(int bonusFreq) {
-        this.bonusFreq = bonusFreq;
+    public void setBonusFreq(char freq) {
+        switch (freq) {
+            case 'r': // Rare
+                bonusFreq = 10;
+                break;
+            case 'c': // Courant
+                bonusFreq = 25;
+                break;
+            case 'a': // Abondant
+                bonusFreq = 50;
+                break;
+        }
     }
     
     public int getMalusFreq() {
         return malusFreq;
     }
 
-    public void setMalusFreq(int malusFreq) {
-        this.malusFreq = malusFreq;
+    public void setMalusFreq(char freq) {
+        switch (freq) {
+            case 'r': // Rare
+                bonusFreq = 10;
+                break;
+            case 'c': // Courant
+                bonusFreq = 25;
+                break;
+            case 'a': // Abondant
+                bonusFreq = 50;
+                break;
+        }
     }
     
 }

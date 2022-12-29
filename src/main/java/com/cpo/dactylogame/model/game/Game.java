@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Timer;
 
+import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Listener;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.text.Text;
@@ -18,15 +19,17 @@ public abstract class Game implements ActionListener {
     
     protected Listener listener;
     protected Parametres param;
+    protected GameState state;
 
     /**
      * Crée un objet jeu
      * @param window La fenêtre du jeu
      */
-    public Game(Window window, Parametres param) {
+    public Game(Window window, Parametres param, GameState state) {
         this.window = window;
         this.param = param;
-        this.listener = new Listener(new Text(param.getText()));
+        this.state = state;
+        this.listener = new Listener(new Text(param.getText(), state == GameState.NORMAL));
         this.timer = new Timer(1000 / FPS, this);
         initGame();
         window.refresh();

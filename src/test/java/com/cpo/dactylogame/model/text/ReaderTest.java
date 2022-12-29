@@ -12,7 +12,7 @@ public class ReaderTest {
     @BeforeEach
     public void initReader() {
         try {
-            this.reader = new Reader("resources/textes/test.txt");
+            this.reader = new Reader("test");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();

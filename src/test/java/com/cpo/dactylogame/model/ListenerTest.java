@@ -11,7 +11,7 @@ public class ListenerTest {
 
     @BeforeEach
     public void initListener() {
-        this.listener = new Listener(new Text(""));
+        this.listener = new Listener(new Text("", true));
     }
 
     @AfterEach

@@ -13,12 +13,16 @@ public class Text {
      * 
      * @param text Le fichier texte à lire, "" Si on veut des mots aléatoires
      */
-    public Text(String text) {
+    public Text(String text, boolean normal) {
         this.words = new LinkedList<String>();
-        try {
-            this.iterator = new Reader("resources/textes/" + text + ".txt");
-        }catch (FileNotFoundException e) {
-            this.iterator = new RandomWords();
+        if (normal) {
+            try {
+                this.iterator = new Reader(text);
+            }catch (FileNotFoundException e) {
+                e .printStackTrace();
+            }
+        }else {
+            this.iterator = new RandomWords(text);
         }
     }
 
