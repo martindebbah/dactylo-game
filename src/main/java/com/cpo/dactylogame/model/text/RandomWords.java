@@ -3,7 +3,6 @@ package com.cpo.dactylogame.model.text;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 public class RandomWords extends WordIterator {
 
@@ -67,21 +66,38 @@ public class RandomWords extends WordIterator {
     "invehi", "parturiat", "insuperabilis", "commodissimum", "spem", "merces", "latebrosis", "longos", "sentirent", "locum",};
     private Random random = new Random();
 
-    public RandomWords() {
-        // Ne fait rien
-    }
-
+    /**
+     * Créer un texte aléatoire à partir d'un fichier texte, si "" en argument, les mots sont choisis parmis
+     * le tableau initial
+     * @param text Le fichier texte existant
+     */
     public RandomWords(String text) {
         if (text.equals(""))
             return;
+
+        words = new String[0];
+        if (text.equals("citation")) { // Si le joueur choisi les citations, on les ajoute toutes
+            for (int i = 1; i < NCIT + 1; i++)
+                createArray(text + i);
+        }else {
+            createArray(text);
+        }
+    }
+
+    /**
+     * Crée le tableau contenant les mots
+     * @param text Le fichier texte
+     */
+    private void createArray(String text) {
         try{
             HashSet<String> s = new HashSet<>();
             Reader r = new Reader(text);
             while (r.hasNext()) {
                 s.add(r.next());
             }
-            words = new String[0];
-            this.words = s.toArray(words);
+            for (int i = 0; i < words.length; i++)
+                s.add(words[i]);
+            words = s.toArray(words);
         }catch (FileNotFoundException e) {
             e.printStackTrace();
         }
