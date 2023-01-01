@@ -4,9 +4,12 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
+import com.cpo.dactylogame.network.Client;
+import com.cpo.dactylogame.network.ServerGame;
 
 import java.awt.event.ActionListener;
 import java.awt.*;
@@ -55,10 +58,105 @@ public class Menu extends JPanel{
         // Boutons de choix de mode de jeu
         createButton("Mode Normal", e -> {window.setGame(GameState.NORMAL);});
         createButton("Mode Jeu", e -> {window.setGame(GameState.JEU);});
-        // createButton("Mode Jeu en Multijoueur", e -> {window.setGame();});
+        createButton("Mode Jeu en Multijoueur", e -> {initServer();});
         
         // Bouton de retour en arrière
         createButton("Retour", e -> {setMainMenu();});
+
+        window.refresh();
+    }
+
+    public void initServer() {
+        removeAll();
+
+        createButton("Héberger une partie", e -> {host();});
+        createButton("Rejoindre une partie", e -> {connect();});
+
+        createButton("Retour", e -> {choiceGame();});
+
+        window.refresh();
+    }
+
+    public void host() {
+        removeAll();
+
+        ServerGame server = new ServerGame();
+        Parametres param = new Parametres();
+
+        // Client client = new Client(server.getIp());
+        
+
+        GridBagConstraints panelGbc = new GridBagConstraints();
+        panelGbc.gridx = GridBagConstraints.REMAINDER;
+        GridBagConstraints buttonsGbc = new GridBagConstraints();
+
+        // Affichage de l'adresse IP
+        JLabel ipLabel = new JLabel(server.getIp());
+
+        // Choix du texte
+        JPanel textPanel = new JPanel(new GridBagLayout());
+        textPanel.setOpaque(false);
+
+        JLabel textLabel = new JLabel("Choix du texte");
+        JPanel textButtons = new JPanel(new GridBagLayout());
+        textButtons.setOpaque(false);
+
+        createParamButton("Aléatoire", e -> {param.setText("");}, textButtons, buttonsGbc, true);
+        createParamButton("Citation", e -> {param.setText("citation");}, textButtons, buttonsGbc, false);
+        createParamButton("Le Seigneur des Anneaux", e -> {param.setText("lotr");}, textButtons, buttonsGbc, false);
+
+        textPanel.add(textLabel, panelGbc);
+        textPanel.add(textButtons, panelGbc);
+
+        // Choix de la fréquence de bonus
+        JPanel bonusPanel = new JPanel(new GridBagLayout());
+        bonusPanel.setOpaque(false);
+
+        JLabel bonusLabel = new JLabel("Fréquence des bonus");
+        JPanel bonusButtons = new JPanel(new GridBagLayout());
+        bonusButtons.setOpaque(false);
+
+        createParamButton("Rare", e -> {param.setBonusFreq('r');}, bonusButtons, buttonsGbc, true);
+        createParamButton("Courant", e -> {param.setBonusFreq('c');}, bonusButtons, buttonsGbc, false);
+        createParamButton("Abondant", e -> {param.setBonusFreq('a');}, bonusButtons, buttonsGbc, false);
+
+        bonusPanel.add(bonusLabel, panelGbc);
+        bonusPanel.add(bonusButtons, panelGbc);
+
+        // Choix de la fréquence de malus
+        JPanel malusPanel = new JPanel(new GridBagLayout());
+        malusPanel.setOpaque(false);
+
+        JLabel malusLabel = new JLabel("Fréquence des malus");
+        JPanel malusButtons = new JPanel(new GridBagLayout());
+        malusButtons.setOpaque(false);
+
+        createParamButton("Rare", e -> {param.setMalusFreq('r');}, malusButtons, buttonsGbc, true);
+        createParamButton("Courant", e -> {param.setMalusFreq('c');}, malusButtons, buttonsGbc, false);
+        createParamButton("Abondant", e -> {param.setMalusFreq('a');}, malusButtons, buttonsGbc, false);
+
+        malusPanel.add(malusLabel, panelGbc);
+        malusPanel.add(malusButtons, panelGbc);
+
+        // Ajout des composants
+        add(ipLabel, gbc);
+        add(textPanel, gbc);
+        add(bonusPanel, gbc);
+        add(malusPanel, gbc);
+
+        createButton("Lancer la partie", e -> {server.isReady(param);});
+        // createButton("Retour", e -> {client.disconnect();initServer();});
+
+        window.refresh();
+    }
+
+    public void connect() {
+        removeAll();
+
+        JTextField ipField = new JTextField("Adresse IP du serveur");
+
+        createButton("Se connecter", e -> {Client c = new Client(ipField.getText());});
+        createButton("Retour", e -> {initServer();});
 
         window.refresh();
     }
