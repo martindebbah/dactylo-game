@@ -81,6 +81,7 @@ public class Menu extends JPanel{
         textButtons.setOpaque(false);
 
         createParamButton("Aléatoire", e -> {param.setText("");}, textButtons, buttonsGbc, true);
+        createParamButton("Citation", e -> {param.setText("citation");}, textButtons, buttonsGbc, false);
         createParamButton("Le Seigneur des Anneaux", e -> {param.setText("lotr");}, textButtons, buttonsGbc, false);
 
         textPanel.add(textLabel, panelGbc);

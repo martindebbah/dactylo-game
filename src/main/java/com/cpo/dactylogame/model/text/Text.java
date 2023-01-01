@@ -10,8 +10,10 @@ public class Text {
     private WordIterator iterator;
     
     /**
-     * 
-     * @param text Le fichier texte à lire, "" Si on veut des mots aléatoires
+     * Crée un texte avec le fichier texte. Si on est en mode normal le fichier sera à écrire entièrement et dans l'ordre.
+     * Sinon, crée un texte aléatoire à partir des mots présents dans le fichier.
+     * @param text Le fichier texte
+     * @param normal True si on est en partie normale
      */
     public Text(String text, boolean normal) {
         this.words = new LinkedList<String>();

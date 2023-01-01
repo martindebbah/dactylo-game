@@ -96,6 +96,7 @@ public class Listener extends KeyAdapter {
     public void refresh() {
         text.removeFirst();
         next = true;
+        lastWord = currentWord;
         calcError();
         if (text.getWords().size() != 0)
             refreshWord();
@@ -105,7 +106,6 @@ public class Listener extends KeyAdapter {
      * Change le mot courant
      */
     public void refreshWord() {
-        lastWord = currentWord;
         currentWord = text.currentWord();
         goodOrBadChar = new int[currentWord.length()];
         index = 0;
@@ -201,10 +201,19 @@ public class Listener extends KeyAdapter {
      * @return Le nombre de points de vie à soigner
      */
     public int getHpToHeal() {
-        int toHeal = firstTry ? hpToHeal : 0;
+        int toHeal = hpToHeal;
         hpToHeal = 0;
-        firstTry = true;
         return toHeal;
+    }
+
+    /**
+     * 
+     * @return True si on a écrit le mot correctement du premier coup
+     */
+    public boolean isFirstTry() {
+        boolean ft = firstTry;
+        firstTry = true;
+        return ft;
     }
 
     public String getErrorWord() {
