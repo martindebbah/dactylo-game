@@ -48,9 +48,16 @@ public class Window extends JFrame {
         if (gameState == GameState.NORMAL) {
             game = new Normal(this, param);
             gameView = new GameView.NormalView(game);
-        } else {
+        } 
+        else if(gameState == GameState.JEU){
             game = new Jeu(this, param, gameState);
             gameView = new GameView.JeuView(game);
+        }
+        else {
+            game = new Jeu(this, param, gameState);
+            gameView = new GameView.JeuView(game);
+
+            
         }
         addPanel(gameView);
         addKeyListener(game.getListener());
