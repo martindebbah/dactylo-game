@@ -104,9 +104,6 @@ public class Jeu extends Game {
             if (firstTry) {
                 if (bonusVal == 1) // Le mot qu'on vient d'écrire est un mot bonus
                     player.heal(hpToHeal);
-                if (player.getHp() > 100) // Le joueur ne peut pas avoir plus de 100 pv
-                    player.loseHp(player.getHp() - 100);
-            
 
                 if (state == GameState.MULTIJOUEUR && bonusVal == -1) // Le mot qu'on vient d'écrire est un mot malus
                     add(word);

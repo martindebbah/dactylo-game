@@ -16,6 +16,8 @@ public class Player {
 
     public void heal(int h) {
         hp += h;
+        if (hp > 100)
+            hp -= hp - 100;
     }
 
     public String getName() {
