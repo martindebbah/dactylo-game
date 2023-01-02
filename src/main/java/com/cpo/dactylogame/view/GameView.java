@@ -85,6 +85,11 @@ public abstract class GameView extends JPanel {
                     default:
                         g.setColor(defaultColor);
                 }
+                if(i == game.getListener().getIndex()){
+                    g.setColor(Color.WHITE);
+                    g.drawLine(x, y + 5, x+10, y + 5);
+                    g.setColor(defaultColor);
+                }
             }
 
             g.drawString(String.valueOf(c[i]), x, y);
