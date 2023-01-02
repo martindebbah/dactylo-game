@@ -58,7 +58,7 @@ public class Menu extends JPanel{
         // Boutons de choix de mode de jeu
         createButton("Mode Normal", e -> {window.setGame(GameState.NORMAL);});
         createButton("Mode Jeu", e -> {window.setGame(GameState.JEU);});
-        createButton("Mode Jeu en Multijoueur", e -> {initServer();});
+        createButton("Mode Multijoueur", e -> {initServer();});
         
         // Bouton de retour en arrière
         createButton("Retour", e -> {setMainMenu();});
@@ -69,29 +69,42 @@ public class Menu extends JPanel{
     public void initServer() {
         removeAll();
 
-        createButton("Héberger une partie", e -> {host();});
-        createButton("Rejoindre une partie", e -> {connect();});
+        JTextField name = new JTextField("Entrez votre nom");
+        add(name, gbc);
+
+        createButton("Héberger une partie", e -> {
+            host(name.getText().equals("Entrez votre nom") ? "" : name.getText());
+        });
+        createButton("Rejoindre une partie", e -> {
+            connect(name.getText().equals("Entrez votre nom") ? "" : name.getText());
+        });
 
         createButton("Retour", e -> {choiceGame();});
 
         window.refresh();
     }
 
-    public void host() {
+    public void host(String name) {
         removeAll();
 
         ServerGame server = new ServerGame();
+        server.start();
         Parametres param = new Parametres();
 
-        // Client client = new Client(server.getIp());
-        
+        try {
+            Thread.sleep(1000);
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Client client = new Client(server.getIp(), server.getPort(), name);
 
         GridBagConstraints panelGbc = new GridBagConstraints();
         panelGbc.gridx = GridBagConstraints.REMAINDER;
         GridBagConstraints buttonsGbc = new GridBagConstraints();
 
         // Affichage de l'adresse IP
-        JLabel ipLabel = new JLabel(server.getIp());
+        JLabel ipLabel = new JLabel("Adresse IP du serveur : " + server.getIp());
 
         // Choix du texte
         JPanel textPanel = new JPanel(new GridBagLayout());
@@ -144,18 +157,33 @@ public class Menu extends JPanel{
         add(bonusPanel, gbc);
         add(malusPanel, gbc);
 
-        createButton("Lancer la partie", e -> {server.isReady(param);});
-        // createButton("Retour", e -> {client.disconnect();initServer();});
+        createButton("Lancer la partie", e -> {client.initGame(param);});
+        createButton("Retour", e -> {client.disconnect();initServer();});
 
         window.refresh();
     }
 
-    public void connect() {
+    public void connect(String name) {
         removeAll();
 
-        JTextField ipField = new JTextField("Adresse IP du serveur");
+        JTextField ipField = new JTextField("Port du serveur");
+        add(ipField, gbc);
 
-        createButton("Se connecter", e -> {Client c = new Client(ipField.getText());});
+        JLabel connected = new JLabel();
+        connected.setVisible(false);
+        add(connected, gbc);
+
+        createButton("Se connecter", e -> {
+            try {
+                Client c = new Client(ipField.getText(), 8080, name);
+                connected.setText("Connexion réussie");
+                connected.setVisible(true);
+            }catch (Exception ex) {
+                ex.printStackTrace();
+                connected.setText("Adresse IP invalide");
+                connected.setVisible(true);
+            }
+        });
         createButton("Retour", e -> {initServer();});
 
         window.refresh();

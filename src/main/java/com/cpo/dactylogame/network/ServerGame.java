@@ -1,64 +1,50 @@
 package com.cpo.dactylogame.network;
 
 import java.net.*;
-import java.util.ArrayList;
-import java.util.concurrent.ForkJoinPool;
-
-import com.cpo.dactylogame.model.Parametres;
-import com.cpo.dactylogame.view.Window;
 
 import java.io.IOException;
 
-public class ServerGame {
+public class ServerGame extends Thread {
 
-    private ServerSocket serverSocket;
-    private ForkJoinPool pool;
     private String ip;
-    private Parametres param;
-    private boolean ready;
+    private boolean running;
 
-    public ServerGame() {
-        this.param = new Parametres();
-        this.ready = false;
+    private final int PORT = 8080;
+
+    @Override
+    public void run() {
+        // this.ready = false;
         try {
             InetAddress address = InetAddress.getLocalHost();
             this.ip = address.getHostAddress();
-            this.serverSocket = new ServerSocket(4242, 2); // address
+            ServerSocket serverSocket = new ServerSocket(PORT, 5, address);
 
-            boolean running = true;
+            running = true;
             while (running) {
                 Socket s = serverSocket.accept();
+                System.out.println("accepté");
                 new ClientHandler(s).start();
-
-                if (s.isClosed())
-                    running = false;
             }
 
-            serverSocket.close();
+            System.out.println("fermé");
 
-            //start();
+            serverSocket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }   
     }
 
-    public void start() {
-        // Lancer toutes les parties avec param
-    }
-
-    public void isReady(Parametres p) {
-        ready = true;
-        param = p;
-    }
-
-    public void stop() throws IOException{
-        ready = false;
-        serverSocket.close();
+    public void close() {
+        running = false;
     }
 
     public String getIp() {
         return ip;
+    }
+
+    public int getPort() {
+        return PORT;
     }
     
 }

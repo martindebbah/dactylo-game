@@ -19,12 +19,12 @@ public class ClientHandler extends Thread{
             PrintWriter out = new PrintWriter(s.getOutputStream(), true);
 
             // Envoyez un message de bienvenue au client
-            out.println("Bienvenue sur le serveur ! Envoyez votre nom et votre âge pour commencer.");
+            System.out.println("Bienvenue sur le serveur ! Envoyez votre nom et votre âge pour commencer.");
 
             // Lit les données envoyées par le client et les affiche sur la console
             String name = in.readLine();
-            int age = Integer.parseInt(in.readLine());
             System.out.println("Nom du client : " + name);
+            int age = Integer.parseInt(in.readLine());
             System.out.println("Age du client : " + age);
 
             // Envoyez un message au client pour lui dire au revoir
