@@ -25,3 +25,13 @@ Jouez seul ou en réseau grâce à notre fonctionnalité multijoueur.
 
 Donner les droits en exécution au script `run.sh`. (-> `chmod u+x run.sh`)
 Lancer le script `run.sh` pour exécuter le programme. (-> `./run.sh`)
+
+
+## Exécuter les tests
+
+Lancer la commande `mvn test`
+
+
+## Fonctionnalités implémentées
+
+

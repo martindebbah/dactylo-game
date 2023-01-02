@@ -18,6 +18,7 @@ public class Jeu extends Game {
     private int level;
     private int nWritten;
     private Timer timerAdd;
+    private String wordToSend = "";
 
     public Jeu(Window window, Parametres param, GameState state) {
         super(window, param, state);
@@ -108,7 +109,7 @@ public class Jeu extends Game {
                     player.heal(hpToHeal);
 
                 if (state == GameState.MULTIJOUEUR && bonusVal == -1) // Le mot qu'on vient d'écrire est un mot malus
-                    add(word);
+                    wordToSend = word;
                 /* Mode multi -> envoyer ce add à tous les joueurs via un client ? */
             }
 
@@ -196,6 +197,12 @@ public class Jeu extends Game {
 
     public boolean isMalus(int index) {
         return bonus[index] == -1;
+    }
+
+    public String getWordToSend() {
+        String r = wordToSend;
+        wordToSend = "";
+        return r;
     }
 
     @Override

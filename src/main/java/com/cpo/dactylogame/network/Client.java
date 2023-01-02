@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.Buffer;
 
 import com.cpo.dactylogame.model.Parametres;
 import com.google.gson.Gson;
 
-public class Client{
+public class Client extends Thread {
     
     private Socket s;
     private Gson gson = new Gson();
@@ -21,14 +20,18 @@ public class Client{
         try {
             this.s = new Socket(host, port);
 
-            this.in = new BufferedReader(new InputStreamReader(System.in));
+            this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             this.out = new PrintWriter(s.getOutputStream(), true);
 
-            out.println(name);
-            out.println("21");
+            
         }catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 
     public void initGame(Parametres p) {
@@ -36,8 +39,16 @@ public class Client{
         out.println(paramString);
     }
 
-    public void start() {
+    public void startGame() {
         
+    }
+
+    public void sendWord() {
+
+    }
+
+    public void receiveWord() {
+
     }
 
     public void disconnect() {

@@ -38,8 +38,6 @@ public class Window extends JFrame {
 
     public void setGame(GameState gameState){
         Parametres p = new Parametres();
-        // if (gameState == GameState.NORMAL)
-        //     p.setText("test"); // Si pas de texte choisi, lotr comme texte de base en mode normal
         setGame(gameState, p);
     }
 
