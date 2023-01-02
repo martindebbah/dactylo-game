@@ -45,13 +45,13 @@ public class Parametres {
     public void setMalusFreq(char freq) {
         switch (freq) {
             case 'r': // Rare
-                bonusFreq = 10;
-                break;
-            case 'c': // Courant
                 bonusFreq = 25;
                 break;
-            case 'a': // Abondant
+            case 'c': // Courant
                 bonusFreq = 50;
+                break;
+            case 'a': // Abondant
+                bonusFreq = 75;
                 break;
         }
     }

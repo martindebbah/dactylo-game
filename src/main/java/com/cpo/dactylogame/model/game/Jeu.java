@@ -40,8 +40,10 @@ public class Jeu extends Game {
         this.wordsPos = new int[NWORDS + 1][2]; // Taille du buffer + 1, car lors de l'ajout d'un mot dans une file pleine,
         this.bonus = new int[NWORDS + 1];       // on fait la modification du tableau après l'initialisation des positions.
 
-        level = 1; // Début du jeu au niveau 1
-        this.timerAdd = new Timer(delay(), e -> {add("");}); // Un timer qui ajoute un mot à la file toutes les x secondes
+        if (state == GameState.JEU) {
+            level = 1; // Début du jeu au niveau 1
+            this.timerAdd = new Timer(delay(), e -> {add("");}); // Un timer qui ajoute un mot à la file toutes les x secondes
+        }
         add(""); // Ajout du premier mot
 
         listener.initGame();
@@ -96,7 +98,7 @@ public class Jeu extends Game {
         if (nError == 0) { // Pas d'erreur
             nWritten++; // On incrémente le nombre de mots écrits sans erreur
 
-            if (nWritten % 100 == 0) { // Tous les 100 mots sans erreur
+            if (state == GameState.JEU && nWritten % 100 == 0) { // Tous les 100 mots sans erreur
                 level++; // On monte d'un niveau
                 timerAdd.setDelay(delay()); // Et on change la vitesse du jeu
             }
@@ -107,7 +109,7 @@ public class Jeu extends Game {
 
                 if (state == GameState.MULTIJOUEUR && bonusVal == -1) // Le mot qu'on vient d'écrire est un mot malus
                     add(word);
-                /* Mode multi -> envoyer ce add à tous les joueurs */
+                /* Mode multi -> envoyer ce add à tous les joueurs via un client ? */
             }
 
         }else {
@@ -147,12 +149,10 @@ public class Jeu extends Game {
         if (new Random().nextInt(100) < bonusFreq)
             bonus[i] = 1;
 
+        // Fréquence des malus en multi
         double malusFreq = param.getMalusFreq();
-        if (state == GameState.MULTIJOUEUR && new Random().nextInt(100) < malusFreq && bonus[i] == 0)
+        if (state == GameState.MULTIJOUEUR && new Random().nextInt(100) < malusFreq)
             bonus[i] = -1;
-        /* Définir comment choisir entre bonus et malus si le mot veut être les deux
-         * Ne faire cette dernière que lors du multi
-         */
 
         int wordLength = (listener.getText().get(i).length()) * 25;
         // Taille du mot en pixels
