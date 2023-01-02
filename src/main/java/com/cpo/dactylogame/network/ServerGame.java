@@ -12,28 +12,33 @@ public class ServerGame extends Thread {
 
     private String ip;
     private boolean running;
+    private boolean ready;
     private static List<ClientHandler> clients = new LinkedList<>();
+    private static int nbClients = 0;
 
     private final int PORT = 8080;
 
     @Override
     public void run() {
-        // this.ready = false;
         try {
             InetAddress address = InetAddress.getLocalHost();
             this.ip = address.getHostAddress();
             ServerSocket serverSocket = new ServerSocket(PORT, 5, address);
 
-            running = true;
-            while (running) {
+            while (!ready || nbClients < 2) {
                 Socket s = serverSocket.accept();
-                System.out.println("accepté");
+
                 ClientHandler clienthandler = new ClientHandler(s);
                 clients.add(clienthandler);
+                nbClients++;
                 clienthandler.start();
+
+                if (ready && nbClients < 2)
+                    ready = false;
             }
 
-            System.out.println("fermé");
+            for (ClientHandler client : clients)
+                client.sendData("startGame", client);
 
             serverSocket.close();
 
@@ -52,6 +57,10 @@ public class ServerGame extends Thread {
 
     public int getPort() {
         return PORT;
+    }
+
+    public void setReady(){
+        ready = true;
     }
 
     public class ClientHandler extends Thread {
@@ -73,7 +82,8 @@ public class ServerGame extends Thread {
                         continue;
 
                     for (ClientHandler client : ServerGame.clients)
-                        client.sendData(data);
+                        if (client != this)
+                            sendData(data, client);
                 }
 
             }catch (IOException e) {
@@ -81,13 +91,17 @@ public class ServerGame extends Thread {
             }
         }
 
-        public void sendData(String data) {
+        public void sendData(String data, ClientHandler client) {
             try {
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                PrintWriter out = new PrintWriter(client.getSocket().getOutputStream(), true);
                 out.println(data);
             }catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        public Socket getSocket() {
+            return socket;
         }
 
     }

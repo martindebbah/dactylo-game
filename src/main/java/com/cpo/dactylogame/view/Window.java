@@ -7,6 +7,7 @@ import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.game.Game;
 import com.cpo.dactylogame.model.game.Normal;
+import com.cpo.dactylogame.network.Client;
 import com.cpo.dactylogame.model.game.Jeu;
 
 public class Window extends JFrame {
@@ -46,16 +47,19 @@ public class Window extends JFrame {
             game = new Normal(this, param);
             gameView = new GameView.NormalView(game);
         } 
-        else if(gameState == GameState.JEU){
-            game = new Jeu(this, param, gameState);
-            gameView = new GameView.JeuView(game);
-        }
         else {
-            game = new Jeu(this, param, gameState);
+            game = new Jeu(this, param);
             gameView = new GameView.JeuView(game);
-
-            
         }
+        addPanel(gameView);
+        addKeyListener(game.getListener());
+        refresh();
+    }
+
+    public void setGame(Client c, Parametres param) {
+        game =  new Jeu(this, param, c);
+        gameView = new GameView.JeuView(game);
+
         addPanel(gameView);
         addKeyListener(game.getListener());
         refresh();

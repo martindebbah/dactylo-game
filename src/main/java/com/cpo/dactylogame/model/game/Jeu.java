@@ -7,6 +7,7 @@ import javax.swing.Timer;
 import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.Player;
+import com.cpo.dactylogame.network.Client;
 import com.cpo.dactylogame.view.Window;
 
 public class Jeu extends Game {
@@ -20,9 +21,16 @@ public class Jeu extends Game {
     private Timer timerAdd;
     private String wordToSend = "";
 
-    public Jeu(Window window, Parametres param, GameState state) {
-        super(window, param, state);
+    private Client client;
+
+    public Jeu(Window window, Parametres param) {
+        super(window, param, GameState.JEU);
         this.player = new Player("");
+    }
+
+    public Jeu(Window window, Parametres param, Client c) {
+        super(window, param, GameState.MULTIJOUEUR);
+        this.player = new Player(c.getPlayerName());
     }
 
     @Override
@@ -32,7 +40,10 @@ public class Jeu extends Game {
 
     @Override
     public void gameOver() {
-        timerAdd.stop();
+        if (state == GameState.MULTIJOUEUR)
+            client.disconnect();
+        else
+            timerAdd.stop();
         super.gameOver();
     }
 
@@ -61,6 +72,12 @@ public class Jeu extends Game {
                 move = move ? !isAbove(i, j) : false;
             if (wordsPos[i][1] < 600 && move)
                 wordsPos[i][1] += 1;
+        }
+
+        if (state == GameState.MULTIJOUEUR) {
+            String word = client.receiveWord();
+            if (word != null)
+                add(word);
         }
     }
 
@@ -109,8 +126,7 @@ public class Jeu extends Game {
                     player.heal(hpToHeal);
 
                 if (state == GameState.MULTIJOUEUR && bonusVal == -1) // Le mot qu'on vient d'écrire est un mot malus
-                    wordToSend = word;
-                /* Mode multi -> envoyer ce add à tous les joueurs via un client ? */
+                    client.sendWord(word);
             }
 
         }else {
