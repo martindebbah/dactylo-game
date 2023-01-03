@@ -19,7 +19,6 @@ public class Jeu extends Game {
     private int level;
     private int nWritten;
     private Timer timerAdd;
-    private String wordToSend = "";
 
     private Client client;
 
@@ -31,6 +30,7 @@ public class Jeu extends Game {
     public Jeu(Window window, Parametres param, Client c) {
         super(window, param, GameState.MULTIJOUEUR);
         this.player = new Player(c.getPlayerName());
+        this.client = c;
     }
 
     @Override
@@ -59,7 +59,8 @@ public class Jeu extends Game {
         add(""); // Ajout du premier mot
 
         listener.initGame();
-        timerAdd.start(); // Lancement du jeu
+        if (state == GameState.JEU)
+            timerAdd.start(); // Lancement du jeu
     }
 
     /**
@@ -75,8 +76,8 @@ public class Jeu extends Game {
         }
 
         if (state == GameState.MULTIJOUEUR) {
-            String word = client.receiveWord();
-            if (word != null)
+            String word = client.getWord();
+            if (!word.equals(""))
                 add(word);
         }
     }
@@ -105,7 +106,7 @@ public class Jeu extends Game {
         
         // Si le buffer est rempli à moins de 50%, on ajoute un mot
         if (listener.getText().getNbWords() < listener.getText().getBufferSize() / 2)
-        add("");
+            add("");
         
         // On change le mot courant
         listener.refreshWord();
@@ -213,12 +214,6 @@ public class Jeu extends Game {
 
     public boolean isMalus(int index) {
         return bonus[index] == -1;
-    }
-
-    public String getWordToSend() {
-        String r = wordToSend;
-        wordToSend = "";
-        return r;
     }
 
     @Override

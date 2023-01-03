@@ -98,6 +98,7 @@ public class Menu extends JPanel{
         }
 
         Client client = new Client(server.getIp(), server.getPort(), name, window);
+        client.start();
 
         GridBagConstraints panelGbc = new GridBagConstraints();
         panelGbc.gridx = GridBagConstraints.REMAINDER;
@@ -157,7 +158,7 @@ public class Menu extends JPanel{
         add(bonusPanel, gbc);
         add(malusPanel, gbc);
 
-        createButton("Lancer la partie", e -> {server.setReady();});
+        createButton("Lancer la partie", e -> {client.initGame(param);});
         createButton("Retour", e -> {client.disconnect();initServer();});
 
         window.refresh();
@@ -166,16 +167,17 @@ public class Menu extends JPanel{
     public void connect(String name) {
         removeAll();
 
-        JTextField ipField = new JTextField("Port du serveur");
+        JTextField ipField = new JTextField("Adresse IP du serveur");
         add(ipField, gbc);
 
         JLabel connected = new JLabel();
         connected.setVisible(false);
         add(connected, gbc);
 
-        createButton("Se connecter", e -> {
+        createButton("Se connecter", e -> { // A changer
             try {
                 Client c = new Client(ipField.getText(), 8080, name, window);
+                c.start();
                 connected.setText("Connexion réussie");
                 connected.setVisible(true);
             }catch (Exception ex) {

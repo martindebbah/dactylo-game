@@ -12,9 +12,8 @@ public class ServerGame extends Thread {
 
     private String ip;
     private boolean running;
-    private boolean ready;
     private static List<ClientHandler> clients = new LinkedList<>();
-    private static int nbClients = 0;
+    private static int nbClients = 0; // A implémenter pour ne pas pouvoir lancer à un joueur
 
     private final int PORT = 8080;
 
@@ -25,20 +24,15 @@ public class ServerGame extends Thread {
             this.ip = address.getHostAddress();
             ServerSocket serverSocket = new ServerSocket(PORT, 5, address);
 
-            while (!ready || nbClients < 2) {
+            this.running = true;
+            while (running) {
                 Socket s = serverSocket.accept();
 
                 ClientHandler clienthandler = new ClientHandler(s);
                 clients.add(clienthandler);
                 nbClients++;
                 clienthandler.start();
-
-                if (ready && nbClients < 2)
-                    ready = false;
             }
-
-            for (ClientHandler client : clients)
-                client.sendData("startGame", client);
 
             serverSocket.close();
 
@@ -59,10 +53,6 @@ public class ServerGame extends Thread {
         return PORT;
     }
 
-    public void setReady(){
-        ready = true;
-    }
-
     public class ClientHandler extends Thread {
 
         private Socket socket;
@@ -76,13 +66,11 @@ public class ServerGame extends Thread {
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                while (true) {
+                boolean running = true;
+                while (running) {
                     String data = in.readLine();
-                    if (data == null)
-                        continue;
-
                     for (ClientHandler client : ServerGame.clients)
-                        if (client != this)
+                        if (client != this || data.equals("startGame"))
                             sendData(data, client);
                 }
 

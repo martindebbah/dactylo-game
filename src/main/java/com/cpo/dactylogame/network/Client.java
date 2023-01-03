@@ -9,17 +9,19 @@ import java.net.Socket;
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.model.game.Game;
 import com.cpo.dactylogame.view.Window;
-import com.google.gson.Gson;
+// import com.google.gson.Gson;
 
 public class Client extends Thread {
     
     private Socket s;
-    private Gson gson = new Gson();
+    // private Gson gson = new Gson();
     private BufferedReader in;
     private PrintWriter out;
     private Window window;
     private String name;
     private Game game;
+    private String word = "";
+    private boolean running = true;;
 
     public Client(String host, int port, String name, Window w) {
         this.window = w;
@@ -38,26 +40,39 @@ public class Client extends Thread {
 
     @Override
     public void run() {
-        String p = null;
-        while (p == null) {
-            p = receiveWord();
+        boolean waiting = true;
+        while (waiting) {
+            String p = receiveWord();
+            if (p.equals("startGame"))
+                waiting = false;
         }
-        startGame(p);
+        startGame();
     }
 
     public void initGame(Parametres p) {
-        String paramString = gson.toJson(p);
-        out.println(paramString);
+        // String paramString = gson.toJson(p);
+        // out.println(paramString);
+        sendWord("startGame");
     }
 
-    public void startGame(String paramString) {
-        Parametres param = gson.fromJson(paramString, Parametres.class);
-        window.setGame(this, param);
+    public void startGame() {
+        // Parametres param = gson.fromJson(paramString, Parametres.class);
+        window.setGame(this, new Parametres());
         game = window.getGame();
+
+        while (running) {
+            word = receiveWord();
+        }
     }
 
     public void sendWord(String word) {
         out.println(word);
+    }
+
+    public String getWord() {
+        String r = word;
+        word = "";
+        return r;
     }
 
     public String receiveWord() {
@@ -72,7 +87,6 @@ public class Client extends Thread {
     public void disconnect() {
         try {
             s.close();
-            System.out.println("Déconnexion réussie");
         }catch (Exception e) {
             e.printStackTrace();
         }
