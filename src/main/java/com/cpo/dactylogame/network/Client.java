@@ -21,7 +21,9 @@ public class Client extends Thread {
     private String name;
     private Game game;
     private String word = "";
-    private boolean running = true;;
+    private boolean running = true;
+    private boolean connected;
+    private int rank = 0;
 
     public Client(String host, int port, String name, Window w) {
         this.window = w;
@@ -32,9 +34,9 @@ public class Client extends Thread {
             this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             this.out = new PrintWriter(s.getOutputStream(), true);
 
-            
-        }catch (IOException e) {
-            e.printStackTrace();
+            connected = true;
+        }catch (Exception e) {
+            connected = false;
         }
     }
 
@@ -62,6 +64,10 @@ public class Client extends Thread {
 
         while (running) {
             word = receiveWord();
+            // if (!running) { // La partie est finie, on récupère le classement
+            //     rank = Integer.parseInt(word);
+            //     System.out.println("fini" + rank);
+            // }
         }
     }
 
@@ -79,21 +85,31 @@ public class Client extends Thread {
         try {
             return in.readLine();
         }catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            return "";
         }
     }
 
     public void disconnect() {
         try {
+            connected = false;
+            running = false;
+            // sendWord("QuelRang?");
             s.close();
         }catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public boolean isConnected() {
+        return connected;
+    }
+
     public String getPlayerName() {
         return name;
+    }
+
+    public int getRank() {
+        return rank;
     }
 
 }

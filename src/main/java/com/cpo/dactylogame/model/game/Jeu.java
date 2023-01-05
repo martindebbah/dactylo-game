@@ -216,6 +216,12 @@ public class Jeu extends Game {
         return bonus[index] == -1;
     }
 
+    public int getRank() {
+        if (client != null)
+            return client.getRank();
+        return 0;
+    }
+
     @Override
     public void mainLoop() {
         update();

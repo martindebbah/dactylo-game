@@ -88,6 +88,15 @@ public class Menu extends JPanel{
         removeAll();
 
         ServerGame server = new ServerGame();
+
+        if (!server.isRunning()) {
+            JLabel errorLabel = new JLabel("Une erreur est survenue");
+            add(errorLabel, gbc);
+            createButton("Retour", e -> {initServer();});
+            window.refresh();
+            return;
+        }
+
         server.start();
         Parametres param = new Parametres();
 
@@ -174,17 +183,15 @@ public class Menu extends JPanel{
         connected.setVisible(false);
         add(connected, gbc);
 
-        createButton("Se connecter", e -> { // A changer
-            try {
-                Client c = new Client(ipField.getText(), 8080, name, window);
-                c.start();
+        createButton("Se connecter", e -> {
+            Client client = new Client(ipField.getText(), 8080, name, window);
+            if (client.isConnected()) {
+                client.start();
                 connected.setText("Connexion réussie");
-                connected.setVisible(true);
-            }catch (Exception ex) {
-                ex.printStackTrace();
+            }else {
                 connected.setText("Adresse IP invalide");
-                connected.setVisible(true);
             }
+            connected.setVisible(true);
         });
         createButton("Retour", e -> {initServer();});
 

@@ -104,6 +104,14 @@ public abstract class Game implements ActionListener {
 
     /**
      * 
+     * @return Le type de partie
+     */
+    public GameState getState() {
+        return state;
+    }
+
+    /**
+     * 
      * @param i L'index du mot voulu
      * @return La position x du mot à l'index donné
      */
