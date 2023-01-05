@@ -29,8 +29,6 @@ public class ServerGame extends Thread {
 
             this.ip = address.getHostAddress();
 
-
-            System.out.println(ip);
             ServerSocket serverSocket = new ServerSocket(PORT, 5, address);
 
             this.running = true;
@@ -50,25 +48,22 @@ public class ServerGame extends Thread {
         }   
     }
 
-    private InetAddress computeIp() {
-        try {
-            InetAddress localhost = InetAddress.getLocalHost();
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+    private InetAddress computeIp() throws UnknownHostException, SocketException {
+        InetAddress localhost = InetAddress.getLocalHost();
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface currentInterface = interfaces.nextElement();
-                Enumeration<InetAddress> addresses = currentInterface.getInetAddresses();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface currentInterface = interfaces.nextElement();
+            Enumeration<InetAddress> addresses = currentInterface.getInetAddresses();
 
-                while (addresses.hasMoreElements()) {
-                    InetAddress currentAddress = addresses.nextElement();
-                    if (!localhost.getHostAddress().equals(currentAddress.getHostAddress()) && isIpv4(currentAddress))
-                        return currentAddress;
-                }
+            while (addresses.hasMoreElements()) {
+                InetAddress currentAddress = addresses.nextElement();
+                if (!currentAddress.getHostAddress().equals("127.0.0.1") && isIpv4(currentAddress))
+                    return currentAddress;
             }
-            return null;
-        } catch (Exception e) {
-            return null;
         }
+        
+        return null;
     }
 
     public static boolean isIpv4(InetAddress a) {
