@@ -14,7 +14,7 @@ public class ServerGame extends Thread {
     private String ip;
     private boolean running = true;
     private static List<ClientHandler> clients = new LinkedList<>();
-    private static int nbClients = 0; // A implémenter pour ne pas pouvoir lancer à un joueur
+    private ServerSocket serverSocket;
 
     private final int PORT = 8080;
 
@@ -29,27 +29,22 @@ public class ServerGame extends Thread {
 
             this.ip = address.getHostAddress();
 
-            ServerSocket serverSocket = new ServerSocket(PORT, 5, address);
+            this.serverSocket = new ServerSocket(PORT, 5, address);
 
-            this.running = true;
-            while (running) {
+            while (true) {
                 Socket s = serverSocket.accept();
 
                 ClientHandler clienthandler = new ClientHandler(s);
                 clients.add(clienthandler);
-                nbClients++;
                 clienthandler.start();
             }
 
-            serverSocket.close();
-
         } catch (IOException e) {
-            e.printStackTrace();
+            running = false;
         }   
     }
 
-    private InetAddress computeIp() throws UnknownHostException, SocketException {
-        InetAddress localhost = InetAddress.getLocalHost();
+    private InetAddress computeIp() throws SocketException {
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 
         while (interfaces.hasMoreElements()) {
@@ -58,7 +53,7 @@ public class ServerGame extends Thread {
 
             while (addresses.hasMoreElements()) {
                 InetAddress currentAddress = addresses.nextElement();
-                if (!currentAddress.getHostAddress().equals("127.0.0.1") && isIpv4(currentAddress))
+                if (!currentAddress.getHostAddress().equals("127.0.0.1") && isIPv4(currentAddress))
                     return currentAddress;
             }
         }
@@ -66,7 +61,12 @@ public class ServerGame extends Thread {
         return null;
     }
 
-    public static boolean isIpv4(InetAddress a) {
+    /**
+     * 
+     * @param a L'adresse IP à tester
+     * @return True si c'est une adresse IPv4
+     */
+    public static boolean isIPv4(InetAddress a) {
         byte[] address = a.getAddress();
         if (address.length == 4)
             return true;
@@ -74,7 +74,7 @@ public class ServerGame extends Thread {
     }
 
     public static int getNbClients() {
-        return nbClients;
+        return clients.size();
     }
 
     public void close() {
@@ -93,9 +93,10 @@ public class ServerGame extends Thread {
         return running;
     }
 
-    public void remove(ClientHandler c) {
+    public void remove(ClientHandler c) throws IOException {
         clients.remove(c);
-        nbClients--;
+        if (clients.size() == 0)
+            serverSocket.close();
     }
 
     public class ClientHandler extends Thread {
@@ -115,18 +116,26 @@ public class ServerGame extends Thread {
                 while (running) {
                     String data = in.readLine();
 
+                    // Envoi du rang en fin de partie
                     // if (data.equals("QuelRang?")) {
                     //     sendData(Integer.toString(nbClients), this);
                     //     ServerGame.this.remove(this);
                     //     running = false;
                     // }else
+                    
                     if (data == null) {
                         ServerGame.this.remove(this);
                         running = false;
-                    }else
-                        for (ClientHandler client : ServerGame.clients)
-                            if (client != this || data.equals("startGame"))
+                    }else if (data.equals("startGame")) {
+                        if (clients.size() > 1) {
+                            for (ClientHandler client : clients)
                                 sendData(data, client);
+                        }
+                    }else {
+                        for (ClientHandler client : clients)
+                            if (client != this)
+                                sendData(data, client);
+                    }
                 }
 
             }catch (IOException e) {

@@ -1,23 +1,26 @@
 package com.cpo.dactylogame.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Stat {
 
     private double vit; // Vitesse (= mots/minute)
     private double prec; // Précision (= % de caractères utiles tapés)
     private double reg; // Régularité (= moyenne de temps en deux frappes de caractères utiles)
 
-    private double nChar; // Nombre de caractères utiles
-    private double nTyped; // Nombre total d'appuis de touches
+    private int nChar; // Nombre de caractères utiles
+    private int nTyped; // Nombre total d'appuis de touches
 
     // Nombres de caractères tapés temporaires
-    private double tmpChar;
-    private double tmpTyped;
+    private int tmpChar;
+    private int tmpTyped;
 
     private long startTime; // Le temps à partir duquel on commence à calculer, en milli-secondes
 
     // Temps temporaires en milli-secondes pour calcul de la régularité
-    private long tmpReg;
-    private long tmpTot;
+    private List<Long> regList = new LinkedList<>();
+    private List<Long> tmpRegList = new LinkedList<>();
     private long lastTime;
 
     /**
@@ -51,14 +54,22 @@ public class Stat {
      * Calcule la précision
      */
     public void calcPrec() {
-        prec = nChar / nTyped * 100;
+        prec = (double) nChar / nTyped * 100;
     }
 
     /**
      * Calcule la régularité
      */
-    public void calcReg() { // Pas sûr
-        reg = tmpTot / (nChar - 1) / 1000;
+    public void calcReg() {
+        // Calcul de la moyenne des valeurs
+        double moyenne = regList.stream().mapToLong(l -> l).average().getAsDouble();
+        // Calcul de la moyenne des écarts
+        double ecartMoyen = regList.stream().mapToLong(l -> (long) Math.pow(moyenne - l, 2)).sum() / (regList.size() - 1);
+        // Calcul de l'écart type
+        reg = Math.sqrt(ecartMoyen) / 1000; // Divisé par 1000 car 'ecartMoyen' est en millisecondes
+        System.out.println(moyenne);
+        System.out.println(ecartMoyen);
+        System.out.println(reg);
     }
 
     /**
@@ -71,7 +82,7 @@ public class Stat {
 
         // Régularité
         time = time - startTime;
-        tmpReg += time - lastTime;
+        tmpRegList.add(time - lastTime);
         lastTime = time;
     }
 
@@ -92,12 +103,13 @@ public class Stat {
     public void validate(boolean correct) {
         if (correct) {
             nChar += tmpChar;
-            tmpTot += tmpReg;
+            regList.addAll(tmpRegList);
         }
         nTyped += tmpTyped;
-        tmpChar = 0;
+
         tmpTyped = 0;
-        tmpReg = 0;
+        tmpChar = 0;
+        tmpRegList.clear();
     }
 
     /**
