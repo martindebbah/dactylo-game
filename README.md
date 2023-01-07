@@ -34,4 +34,6 @@ Lancer la commande `mvn test`
 
 ## Fonctionnalités implémentées
 
+### Mode Normal :
+
 

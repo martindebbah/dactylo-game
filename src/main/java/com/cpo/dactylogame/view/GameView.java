@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
-import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Stat;
 import com.cpo.dactylogame.model.game.*;
 import com.cpo.dactylogame.model.text.Text;

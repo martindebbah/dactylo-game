@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.cpo.dactylogame.model.Parametres;
-import com.cpo.dactylogame.model.game.Game;
 import com.cpo.dactylogame.view.Window;
 // import com.google.gson.Gson;
 
@@ -19,7 +18,6 @@ public class Client extends Thread {
     private PrintWriter out;
     private Window window;
     private String name;
-    private Game game;
     private String word = "";
     private boolean running = true;
     private boolean connected;
@@ -60,7 +58,6 @@ public class Client extends Thread {
     public void startGame() {
         // Parametres param = gson.fromJson(paramString, Parametres.class);
         window.setGame(this, new Parametres());
-        game = window.getGame();
 
         while (running) {
             word = receiveWord();

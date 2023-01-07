@@ -29,6 +29,7 @@ public class Stat {
      */
     public void initTime(long time) {
         this.startTime = time;
+        this.lastTime = time;
     }
 
     /**
@@ -67,9 +68,6 @@ public class Stat {
         double ecartMoyen = regList.stream().mapToLong(l -> (long) Math.pow(moyenne - l, 2)).sum() / (regList.size() - 1);
         // Calcul de l'écart type
         reg = Math.sqrt(ecartMoyen) / 1000; // Divisé par 1000 car 'ecartMoyen' est en millisecondes
-        System.out.println(moyenne);
-        System.out.println(ecartMoyen);
-        System.out.println(reg);
     }
 
     /**
