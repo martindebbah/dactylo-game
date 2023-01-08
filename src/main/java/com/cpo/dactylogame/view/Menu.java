@@ -35,12 +35,20 @@ public class Menu extends JPanel{
         setMainMenu();
     }
 
+    /**
+     * Crée un bouton pour le placer sur le menu
+     * @param name Le nom affiché sur le bouton
+     * @param l L'ActionListener à ajouter au bouton
+     */
     public void createButton(String name, ActionListener l) {
         JButton button = new JButton(name);
         button.addActionListener(l);
         add(button, gbc);
     }
 
+    /**
+     * Affiche le menu principal
+     */
     public void setMainMenu() {
         removeAll();
 
@@ -52,13 +60,16 @@ public class Menu extends JPanel{
         window.refresh();
     }
 
+    /**
+     * Affiche la page de choix de mode de jeu
+     */
     public void choiceGame() {
         removeAll();
 
         // Boutons de choix de mode de jeu
         createButton("Mode Normal", e -> {window.setGame(GameState.NORMAL);});
         createButton("Mode Jeu", e -> {window.setGame(GameState.JEU);});
-        createButton("Mode Multijoueur", e -> {initServer();});
+        createButton("Mode Multijoueur", e -> {initMulti();});
         
         // Bouton de retour en arrière
         createButton("Retour", e -> {setMainMenu();});
@@ -66,7 +77,10 @@ public class Menu extends JPanel{
         window.refresh();
     }
 
-    public void initServer() {
+    /**
+     * Affiche la page de choix entre créer un serveur et rejoindre une partie en ligne
+     */
+    public void initMulti() {
         removeAll();
 
         JTextField name = new JTextField("Entrez votre nom");
@@ -84,6 +98,10 @@ public class Menu extends JPanel{
         window.refresh();
     }
 
+    /**
+     * Affiche la page de création de la partie en ligne et crée un serveur
+     * @param name Le nom du joueur
+     */
     public void host(String name) {
         removeAll();
 
@@ -92,7 +110,7 @@ public class Menu extends JPanel{
         if (!server.isRunning()) {
             JLabel errorLabel = new JLabel("Une erreur est survenue");
             add(errorLabel, gbc);
-            createButton("Retour", e -> {initServer();});
+            createButton("Retour", e -> {initMulti();});
             window.refresh();
             return;
         }
@@ -168,11 +186,15 @@ public class Menu extends JPanel{
         add(malusPanel, gbc);
 
         createButton("Lancer la partie", e -> {client.initGame(param);});
-        createButton("Retour", e -> {client.disconnect();initServer();});
+        createButton("Retour", e -> {client.disconnect();initMulti();});
 
         window.refresh();
     }
 
+    /**
+     * Affiche la page de connexion pour un joueur
+     * @param name Le nom du joeur
+     */
     public void connect(String name) {
         removeAll();
 
@@ -193,11 +215,14 @@ public class Menu extends JPanel{
             }
             connected.setVisible(true);
         });
-        createButton("Retour", e -> {initServer();});
+        createButton("Retour", e -> {initMulti();});
 
         window.refresh();
     }
 
+    /**
+     * Affiche la page de sélection des paramètres
+     */
     public void param() {
         removeAll();
 
@@ -237,21 +262,6 @@ public class Menu extends JPanel{
         bonusPanel.add(bonusLabel, panelGbc);
         bonusPanel.add(bonusButtons, panelGbc);
 
-        // Choix de la fréquence de malus
-        JPanel malusPanel = new JPanel(new GridBagLayout());
-        malusPanel.setOpaque(false);
-
-        JLabel malusLabel = new JLabel("Fréquence des malus");
-        JPanel malusButtons = new JPanel(new GridBagLayout());
-        malusButtons.setOpaque(false);
-
-        createParamButton("Rare", e -> {param.setMalusFreq('r');}, malusButtons, buttonsGbc, true);
-        createParamButton("Courant", e -> {param.setMalusFreq('c');}, malusButtons, buttonsGbc, false);
-        createParamButton("Abondant", e -> {param.setMalusFreq('a');}, malusButtons, buttonsGbc, false);
-
-        malusPanel.add(malusLabel, panelGbc);
-        malusPanel.add(malusButtons, panelGbc);
-
         // Boutons pour jouer
         JPanel buttonsPanel = new JPanel(new GridBagLayout());
         buttonsPanel.setOpaque(false);
@@ -269,13 +279,20 @@ public class Menu extends JPanel{
         // Ajout des composants
         add(textPanel, gbc);
         add(bonusPanel, gbc);
-        add(malusPanel, gbc);
         add(buttonsPanel, gbc);
         createButton("Retour", e -> {setMainMenu();});
 
         window.refresh();
     }
 
+    /**
+     * Crée un bouton pour définir des paramètres
+     * @param name Le nom affiché sur le bouton
+     * @param l L'ActionListener à ajouter au bouton
+     * @param c Le composant dans lequel le bouton se situe
+     * @param g Les contraintes de placement sur le composant
+     * @param selected True si le bouton est la sélection de base
+     */
     public void createParamButton(String name, ActionListener l, JComponent c, GridBagConstraints g, boolean selected) {
         JButton button = new JButton(name);
         button.setOpaque(false);

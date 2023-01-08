@@ -8,12 +8,12 @@ import java.net.Socket;
 
 import com.cpo.dactylogame.model.Parametres;
 import com.cpo.dactylogame.view.Window;
-// import com.google.gson.Gson;
+import com.google.gson.Gson;
 
 public class Client extends Thread {
     
     private Socket s;
-    // private Gson gson = new Gson();
+    private Gson gson = new Gson();
     private BufferedReader in;
     private PrintWriter out;
     private Window window;
@@ -21,7 +21,6 @@ public class Client extends Thread {
     private String word = "";
     private boolean running = true;
     private boolean connected;
-    private int rank = 0;
 
     public Client(String host, int port, String name, Window w) {
         this.window = w;
@@ -40,31 +39,21 @@ public class Client extends Thread {
 
     @Override
     public void run() {
-        boolean waiting = true;
-        while (waiting) {
-            String p = receiveWord();
-            if (p.equals("startGame"))
-                waiting = false;
-        }
-        startGame();
+        String paramString = receiveWord();
+        startGame(paramString);
     }
 
     public void initGame(Parametres p) {
-        // String paramString = gson.toJson(p);
-        // out.println(paramString);
-        sendWord("startGame");
+        String paramString = gson.toJson(p);
+        sendWord(paramString);
     }
 
-    public void startGame() {
-        // Parametres param = gson.fromJson(paramString, Parametres.class);
-        window.setGame(this, new Parametres());
+    public void startGame(String paramString) {
+        Parametres param = gson.fromJson(paramString, Parametres.class);
+        window.setGame(this, param);
 
         while (running) {
             word = receiveWord();
-            // if (!running) { // La partie est finie, on récupère le classement
-            //     rank = Integer.parseInt(word);
-            //     System.out.println("fini" + rank);
-            // }
         }
     }
 
@@ -80,7 +69,8 @@ public class Client extends Thread {
 
     public String receiveWord() {
         try {
-            return in.readLine();
+            String s = in.readLine();
+            return s == null ? "" : s;
         }catch (IOException e) {
             return "";
         }
@@ -90,7 +80,7 @@ public class Client extends Thread {
         try {
             connected = false;
             running = false;
-            // sendWord("QuelRang?");
+            sendWord("game over");
             s.close();
         }catch (Exception e) {
             e.printStackTrace();
@@ -104,9 +94,4 @@ public class Client extends Thread {
     public String getPlayerName() {
         return name;
     }
-
-    public int getRank() {
-        return rank;
-    }
-
 }

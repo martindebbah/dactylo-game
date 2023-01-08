@@ -4,6 +4,7 @@ import java.net.*;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +16,7 @@ public class ServerGame extends Thread {
     private boolean running = true;
     private static List<ClientHandler> clients = new LinkedList<>();
     private ServerSocket serverSocket;
+    private static boolean beforeGame = true;
 
     private final int PORT = 8080;
 
@@ -112,25 +114,24 @@ public class ServerGame extends Thread {
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                boolean running = true;
-                while (running) {
+                while (true) {
                     String data = in.readLine();
 
-                    // Envoi du rang en fin de partie
-                    // if (data.equals("QuelRang?")) {
-                    //     sendData(Integer.toString(nbClients), this);
-                    //     ServerGame.this.remove(this);
-                    //     running = false;
-                    // }else
-                    
                     if (data == null) {
-                        ServerGame.this.remove(this);
-                        running = false;
-                    }else if (data.equals("startGame")) {
-                        if (clients.size() > 1) {
-                            for (ClientHandler client : clients)
-                                sendData(data, client);
-                        }
+                        remove(this);
+                        break;
+                    }
+
+                    if (beforeGame) {
+                        if (clients.size() < 2)
+                            continue;
+                        for (ClientHandler client : clients)
+                            sendData(data, client);
+                        beforeGame = false;
+                        continue;
+                    }
+                    if (data.equals("game over")) {
+                        break;
                     }else {
                         for (ClientHandler client : clients)
                             if (client != this)
