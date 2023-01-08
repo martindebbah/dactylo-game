@@ -46,6 +46,11 @@ public class ServerGame extends Thread {
         }   
     }
 
+    /**
+     * 
+     * @return L'adresse IPv4 publique de l'hôte
+     * @throws SocketException
+     */
     private InetAddress computeIp() throws SocketException {
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 
@@ -75,14 +80,6 @@ public class ServerGame extends Thread {
         return false;
     }
 
-    public static int getNbClients() {
-        return clients.size();
-    }
-
-    public void close() {
-        running = false;
-    }
-
     public String getIp() {
         return ip;
     }
@@ -95,6 +92,11 @@ public class ServerGame extends Thread {
         return running;
     }
 
+    /**
+     * 
+     * @param c Le client à déconnecter du serveur
+     * @throws IOException
+     */
     public void remove(ClientHandler c) throws IOException {
         clients.remove(c);
         if (clients.size() == 0)
@@ -149,6 +151,11 @@ public class ServerGame extends Thread {
             }
         }
 
+        /**
+         * 
+         * @param data La chaîne de caractères à envoyer
+         * @param client Le client qui recevra
+         */
         public void sendData(String data, ClientHandler client) {
             try {
                 PrintWriter out = new PrintWriter(client.getSocket().getOutputStream(), true);

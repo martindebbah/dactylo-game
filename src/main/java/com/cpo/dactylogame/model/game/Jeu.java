@@ -84,6 +84,12 @@ public class Jeu extends Game {
         }
     }
 
+    /**
+     * 
+     * @param word1 Le mot du dessus
+     * @param word2 Le mot du dessous
+     * @return True si le word1 et juste au-dessus de word2
+     */
     private boolean isAbove(int word1, int word2) {
         int start1 = wordsPos[word1][0];
         int end1 = wordsPos[word1][0] + listener.getText().get(word1).length() * 25;
@@ -137,6 +143,10 @@ public class Jeu extends Game {
         }
     }
 
+    /**
+     * 
+     * @return Le délai à utiliser pour l'apparition des mots
+     */
     private int delay() {
         Double r = 0.9;
         for (int i = 1; i < level; i++)

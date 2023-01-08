@@ -44,11 +44,19 @@ public class Client extends Thread {
         startGame(paramString);
     }
 
+    /**
+     * Initialise la partie
+     * @param p Les paramètres utilisé pour la partie
+     */
     public void initGame(Parametres p) {
         String paramString = gson.toJson(p);
         sendWord(paramString);
     }
 
+    /**
+     * Lance la partie pour chaque joueur
+     * @param paramString Les paramètres au format JSon
+     */
     public void startGame(String paramString) {
         Parametres param = gson.fromJson(paramString, Parametres.class);
         window.setGame(this, param);
@@ -63,6 +71,10 @@ public class Client extends Thread {
         }
     }
 
+    /**
+     * Envoie une chaîne de caractères au serveur
+     * @param word La chaîne de caractères à envoyer
+     */
     public void sendWord(String word) {
         out.println(word);
     }
@@ -73,6 +85,10 @@ public class Client extends Thread {
         return r;
     }
 
+    /**
+     * Lit les données envoyées par le serveur
+     * @return La chaîne de caractères lue
+     */
     public String receiveWord() {
         try {
             String s = in.readLine();
@@ -82,6 +98,9 @@ public class Client extends Thread {
         }
     }
 
+    /**
+     * Déconnecte le Socket du serveur
+     */
     public void disconnect() {
         try {
             connected = false;

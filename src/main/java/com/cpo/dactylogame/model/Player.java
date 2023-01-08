@@ -10,10 +10,18 @@ public class Player {
         this.hp = 100;
     }
 
+    /**
+     * Le joueur perd dmg points de vie
+     * @param dmg Le nombre de pv à perdre
+     */
     public void loseHp(int dmg) {
         hp -= dmg;
     }
 
+    /**
+     * Soigne le joueur de h points de vie. Ne peut pas dépasser 100.
+     * @param h Le nombre de pv à soigner
+     */
     public void heal(int h) {
         hp += h;
         if (hp > 100)

@@ -38,6 +38,9 @@ public abstract class GameView extends JPanel {
         game.start();
     }
 
+    /**
+     * Affiche l'écran de fin de jeu
+     */
     public void gameOver() {
         gameOver = true;
 

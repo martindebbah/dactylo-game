@@ -32,16 +32,28 @@ public class Window extends JFrame {
         setMenu();
     }
 
+    /**
+     * Affiche les menus du jeu
+     */
     public void setMenu() {
         addPanel(new Menu(this));
         refresh();
     }
 
+    /**
+     * Lance une partie avec des paramètres basiques
+     * @param gameState Le type de partie
+     */
     public void setGame(GameState gameState){
         Parametres p = new Parametres();
         setGame(gameState, p);
     }
 
+    /**
+     * Lance une partie
+     * @param gameState Le type de partie
+     * @param param Les paramètres à utiliser
+     */
     public void setGame(GameState gameState, Parametres param) {
         if (gameState == GameState.NORMAL) {
             game = new Normal(this, param);
@@ -56,6 +68,11 @@ public class Window extends JFrame {
         refresh();
     }
 
+    /**
+     * Lance une partie en multijoueur
+     * @param c Le client
+     * @param param Les paramètres à utiliser
+     */
     public void setGame(Client c, Parametres param) {
         game =  new Jeu(this, param, c);
         gameView = new GameView.JeuView(game);
@@ -65,12 +82,19 @@ public class Window extends JFrame {
         refresh();
     }
 
+    /**
+     * Supprime tout ce qui est sur la frame et ajoute un nouveau panel
+     * @param panel Le nouveau panel
+     */
     private void addPanel(JPanel panel) {
         getContentPane().removeAll();
         getContentPane().add(panel);
         refresh();
     }
 
+    /**
+     * Actualise la fenêtre
+     */
     public void refresh() {
         revalidate();
         repaint();
@@ -84,11 +108,17 @@ public class Window extends JFrame {
         return gameView;
     }
 
+    /**
+     * Fin de la partie
+     */
     public void gameOver() {
         gameView.gameOver();
         refresh();
     }
 
+    /**
+     * Quitte le programme
+     */
     public void quit() {
         System.exit(0);
     }

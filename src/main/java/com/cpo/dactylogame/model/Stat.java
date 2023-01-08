@@ -65,7 +65,7 @@ public class Stat {
         // Calcul de la moyenne des valeurs
         double moyenne = regList.stream().mapToLong(l -> l).average().getAsDouble();
         // Calcul de la moyenne des écarts
-        double ecartMoyen = regList.stream().mapToLong(l -> (long) Math.pow(moyenne - l, 2)).sum() / (regList.size() - 1);
+        double ecartMoyen = regList.stream().mapToLong(l -> (long) Math.pow(l - moyenne, 2)).sum() / (regList.size() - 1);
         // Calcul de l'écart type
         reg = Math.sqrt(ecartMoyen) / 1000; // Divisé par 1000 car 'ecartMoyen' est en millisecondes
     }
