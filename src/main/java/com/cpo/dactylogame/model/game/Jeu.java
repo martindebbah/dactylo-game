@@ -77,7 +77,9 @@ public class Jeu extends Game {
 
         if (state == GameState.MULTIJOUEUR) {
             String word = client.getWord();
-            if (!word.equals(""))
+            if (word.equals("C'est gagné"))
+                gameOver();
+            else if (!word.equals(""))
                 add(word);
         }
     }
@@ -216,10 +218,12 @@ public class Jeu extends Game {
         return bonus[index] == -1;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public int getRank() {
-        if (client != null)
-            return client.getRank();
-        return 0;
+        return client.getRank();
     }
 
     @Override
