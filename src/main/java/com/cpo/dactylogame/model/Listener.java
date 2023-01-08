@@ -44,7 +44,7 @@ public class Listener extends KeyAdapter {
                     goodOrBadChar[index] = 0;
                 }
                 supp();
-                // return;
+                return;
             }
             else if(errorWord.length() <= 8){
                 errorWord += key.getKeyChar();
@@ -53,7 +53,7 @@ public class Listener extends KeyAdapter {
             if(index > 0) index--;
             goodOrBadChar[index] = 0;
             supp();
-            // return;
+            return;
         }
         else if (key.getKeyChar() == currentWord.charAt(index)){
             goodChar();

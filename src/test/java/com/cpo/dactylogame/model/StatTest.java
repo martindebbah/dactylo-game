@@ -87,8 +87,8 @@ public class StatTest {
         }
         stat.validate(true);
         stat.calcReg();
-        assertEquals(Math.sqrt(214285) / 1_000, stat.getReg());
-        // Moyenne = 1250 -> moyenne écarts = 214285 -> écart type = sqrt(214285)
+        assertEquals(Math.sqrt(187_500) / 1_000, stat.getReg());
+        // Moyenne = 1250 -> moyenne écarts = 187500 -> écart type = sqrt(187500)
 
         for (int i = 0; i < 3; i++) {
             stat.add(currentTime);
@@ -99,8 +99,8 @@ public class StatTest {
         stat.add(currentTime);
         stat.validate(true);
         stat.calcReg();
-        assertEquals(Math.sqrt(242424) / 1_000, stat.getReg());
-        // Moyenne = 1333.33 -> moyenne écarts = 242424 -> écart type = sqrt(242424)
+        assertEquals(Math.sqrt(222222) / 1_000, stat.getReg());
+        // Moyenne = 1333.33 -> moyenne écarts = 222222 -> écart type = sqrt(222222)
 
         currentTime += time;
         for (int i = 0; i < 5; i++) {
@@ -109,8 +109,8 @@ public class StatTest {
         }
         stat.validate(false);
         stat.calcReg();
-        assertEquals(Math.sqrt(242424) / 1_000, stat.getReg());
-        // Moyenne = 1333.33 -> moyenne écarts = 242424 -> écart type = sqrt(242424)
+        assertEquals(Math.sqrt(222222) / 1_000, stat.getReg());
+        // Moyenne = 1333.33 -> moyenne écarts = 222222 -> écart type = sqrt(222222)
     }
     
 }

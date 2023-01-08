@@ -62,12 +62,16 @@ public class Stat {
      * Calcule la régularité
      */
     public void calcReg() {
+        if (regList.size() < 1) {
+            reg = 0;
+            return;
+        }
         // Calcul de la moyenne des valeurs
         double moyenne = regList.stream().mapToLong(l -> l).average().getAsDouble();
         // Calcul de la moyenne des écarts
-        double ecartMoyen = regList.stream().mapToLong(l -> (long) Math.pow(l - moyenne, 2)).sum() / (regList.size() - 1);
+        double ecartMoyen = regList.stream().mapToLong(l -> (long) Math.pow(moyenne - l, 2)).sum() / regList.size();
         // Calcul de l'écart type
-        reg = Math.sqrt(ecartMoyen) / 1000; // Divisé par 1000 car 'ecartMoyen' est en millisecondes
+        reg = Math.sqrt(Math.abs(ecartMoyen)) / 1000; // Divisé par 1000 car 'ecartMoyen' est en millisecondes
     }
 
     /**
@@ -79,8 +83,8 @@ public class Stat {
         tmpTyped++;
 
         // Régularité
-        time = time - startTime;
-        tmpRegList.add(time - lastTime);
+        long newtime = time - lastTime;
+        tmpRegList.add(newtime);
         lastTime = time;
     }
 
