@@ -21,6 +21,7 @@ public class Client extends Thread {
     private String word = "";
     private boolean running = true;
     private boolean connected;
+    private int rank = 0;
 
     public Client(String host, int port, String name, Window w) {
         this.window = w;
@@ -54,6 +55,11 @@ public class Client extends Thread {
 
         while (running) {
             word = receiveWord();
+            try {
+                rank = Integer.parseInt(word);
+            }catch (NumberFormatException e) {
+                // Ne fait rien
+            }
         }
     }
 
@@ -80,7 +86,10 @@ public class Client extends Thread {
         try {
             connected = false;
             running = false;
-            sendWord("game over");
+            sendWord("Quel rang ?");
+            synchronized (this) {
+                wait(1000);
+            }
             s.close();
         }catch (Exception e) {
             e.printStackTrace();
@@ -93,5 +102,9 @@ public class Client extends Thread {
 
     public String getPlayerName() {
         return name;
+    }
+
+    public int getRank() {
+        return rank;
     }
 }

@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
+import com.cpo.dactylogame.model.GameState;
 import com.cpo.dactylogame.model.Stat;
 import com.cpo.dactylogame.model.game.*;
 import com.cpo.dactylogame.model.text.Text;
@@ -218,19 +219,19 @@ public abstract class GameView extends JPanel {
             drawWord(g, level, (game.getWindow().getWidth() - level.length() * 20) / 2, 200, false);
             drawWord(g, nWritten, (game.getWindow().getWidth() - nWritten.length() * 20) / 2, 275, false);
 
-            // if (game.getState() == GameState.MULTIJOUEUR) { // Classement
-            //     int pos = ((Jeu) game).getRank();
-            //     String s;
-            //     switch (pos) {
-            //         case 1:
-            //             s = "er";
-            //             break;
-            //         default:
-            //             s = "ème";
-            //     }
-            //     String rank = "Vous avez fini " + pos + s;
-            //     drawWord(g, rank, (game.getWindow().getWidth() - rank.length() * 20) / 2, 100, false);
-            // }
+            if (game.getState() == GameState.MULTIJOUEUR) { // Classement
+                int pos = ((Jeu) game).getRank();
+                String s;
+                switch (pos) {
+                    case 1:
+                        s = "er";
+                        break;
+                    default:
+                        s = "ème";
+                }
+                String rank = "Vous avez fini " + pos + s;
+                drawWord(g, rank, (game.getWindow().getWidth() - rank.length() * 20) / 2, 100, false);
+            }
         }
 
     }

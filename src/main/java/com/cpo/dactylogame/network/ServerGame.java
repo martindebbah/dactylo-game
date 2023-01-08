@@ -119,6 +119,9 @@ public class ServerGame extends Thread {
 
                     if (data == null) {
                         remove(this);
+                        if (clients.size() == 1)
+                            for (ClientHandler client : clients)
+                                sendData("C'est gagné", client);
                         break;
                     }
 
@@ -130,13 +133,15 @@ public class ServerGame extends Thread {
                         beforeGame = false;
                         continue;
                     }
-                    if (data.equals("game over")) {
-                        break;
-                    }else {
-                        for (ClientHandler client : clients)
-                            if (client != this)
-                                sendData(data, client);
+
+                    if (data.equals("Quel rang ?")) {
+                        sendData("" + clients.size(), this);
+                        continue;
                     }
+
+                    for (ClientHandler client : clients)
+                        if (client != this)
+                            sendData(data, client);
                 }
 
             }catch (IOException e) {
