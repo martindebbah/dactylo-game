@@ -40,8 +40,8 @@ alors envoyés à tous vos opposants.
 
 Pour pouvoir jouer à plusieurs, il suffit qu'un des joueurs chosisse d'héberger
 une partie. Les autres joueurs cliquent alors sur le bouton pour rejoindre une
-partie. Il faut alors rentrer l'adresse IP qui s'affiche sur l'écran du joeur
-hébergeant la partie et de cliquer sur se connecter. Les joeurs doivent alors
+partie. Il faut alors rentrer l'adresse IP qui s'affiche sur l'écran du joueur
+hébergeant la partie et de cliquer sur se connecter. Les joueurs doivent alors
 attendrent que l'hébergeur lance la partie pour tout le monde.
 
 
