@@ -1,10 +1,9 @@
-# Compléments en Programmation Orientée Objet Projet : Dactylo-game
+# Compléments en Programmation Orientée Objet : Dactylo-game
 
-## Membres
+## Auteurs
 
-- Ahmed Yahia Yacine (22001256)
-- Debbah Martin (71804727)
-
+- AHMED YAHIA Yacine
+- DEBBAH Martin
 
 ## Présentation du projet
 
@@ -44,19 +43,21 @@ partie. Il faut alors rentrer l'adresse IP qui s'affiche sur l'écran du joueur
 hébergeant la partie et de cliquer sur se connecter. Les joueurs doivent alors
 attendrent que l'hébergeur lance la partie pour tout le monde.
 
-
 ## Configuration demandée
 
 - Java 19
 - Maven 3.8.6
 
-
 ## Exécuter le programme
 
 Se placer dans la racine de l'arborescence.
-Donner les droits en exécution au script `run.sh`. (-> `chmod u+x run.sh`)
-Lancer le script `run.sh` pour exécuter le programme. (-> `./run.sh`)
+Donner les droits en exécution au script `run.sh`.
 
+`chmod u+x run.sh`
+
+Lancer le script `run.sh` pour exécuter le programme.
+
+`./run.sh`
 
 ## Exécuter les tests
 
